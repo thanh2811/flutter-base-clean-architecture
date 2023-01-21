@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/repository/user_repository.dart';
+import '../../../../../data/repository/remote/user_repository.dart';
 
 part 'new_password_event.dart';
 part 'new_password_state.dart';

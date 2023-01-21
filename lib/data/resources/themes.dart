@@ -15,8 +15,12 @@ class AppTextTheme {
     color: AppColor.black,
     fontWeight: FontWeight.w500,
     fontSize: 15,
-    // overflow: TextOverflow.ellipsis,
-    fontFamily: "Lato",
+  );
+
+  static const TextStyle textPrimaryBlue = TextStyle(
+    color: AppColor.blue,
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
   );
 
   static const TextStyle textTableLabel = TextStyle(
@@ -24,7 +28,6 @@ class AppTextTheme {
     fontWeight: FontWeight.w600,
     fontSize: 12,
     // overflow: TextOverflow.ellipsis,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textPrimaryBold = TextStyle(

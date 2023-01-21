@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/model/auth/forgot_password_method.dart';
-import '../../../../data/repository/user_repository.dart';
+import '../../../../data/repository/remote/repository.dart';
 import '../../../../data/resources/colors.dart';
 import '../../../../di/network_injection.dart';
 import '../new_password_screen/new_password_screen.dart';

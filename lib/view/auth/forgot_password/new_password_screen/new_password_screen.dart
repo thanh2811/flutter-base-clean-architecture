@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../data/repository/user_repository.dart';
+import '../../../../data/repository/remote/user_repository.dart';
 import '../../../../data/resources/colors.dart';
 import '../../../../di/network_injection.dart';
-import '../../../../shared/view_utils.dart';
+import '../../../../shared/utils/view_utils.dart';
 import '../../login_screen/login_screen.dart';
 import 'bloc/new_password_bloc.dart';
 

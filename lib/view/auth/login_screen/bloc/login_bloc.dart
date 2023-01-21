@@ -1,20 +1,21 @@
 import 'dart:async';
 
+import 'package:base_project/data/model/api/base_response.dart';
+import 'package:base_project/data/repository/local/local_data_access.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../data/constants.dart';
 import '../../../../data/model/login/login_response.dart';
-import '../../../../data/repository/user_repository.dart';
+import '../../../../data/repository/remote/repository.dart';
 import '../../../../di/network_injection.dart';
 
 part 'login_event.dart';
+
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
-  SharedPreferences pref = getIt.get<SharedPreferences>();
+  LocalDataAccess localDataAccess = getIt.get<LocalDataAccess>();
 
   LoginBloc({required this.userRepository}) : super(LoginInitial()) {
     on<LoginInitEvent>(_onInitial);
@@ -32,9 +33,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _onInitial(
       LoginInitEvent event, Emitter<LoginState> emit) async {
-    final String username = pref.getString(SharedPreferenceKey.username) ?? '';
-    final String password = pref.getString(SharedPreferenceKey.password) ?? '';
-    emit(LoginGetLocalInfoState(username: username, password: password));
+    final String username = localDataAccess.getUserName();
+    final String password = localDataAccess.getPassword();
+    final bool accountRemember = localDataAccess.getAccountRemember();
+    emit(LoginGetLocalInfoState(
+        username: username,
+        password: password,
+        accountRemember: accountRemember));
+    emit(LoginRememberState(accountRemember));
   }
 
   FutureOr<void> _onLoginRequest(
@@ -43,28 +49,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginFieldRequiredState());
     } else {
       emit(LoginLoadingState());
-      final response = await userRepository.loginRequest(
+      final response = await userRepository.login(
           username: event.username.toString(),
           password: event.password.toString(),
           rememberMe: event.rememberMe);
-      if (response.statusCode == 200) {
-        final LoginResponse loginResponse =
-            LoginResponse.fromJson(response.data);
-        emit(LoginSuccessState(loginResponse: loginResponse));
-        pref.setString(
-            SharedPreferenceKey.idToken, loginResponse.idToken.toString());
-        pref.setString(SharedPreferenceKey.username, event.username.toString());
-        pref.setString(SharedPreferenceKey.password, event.password.toString());
-        pref.setBool(SharedPreferenceKey.rememberMe, event.rememberMe);
-        // await NotificationHelper.instance
-        //     .initSignalrConnection(loginResponse.idToken);
-      } else if (response.statusCode == 404 || response.statusCode == 500) {
-        emit(LoginFailedState(
-            message:
-                'Hệ thống đang xảy ra lỗi, mời bạn đăng nhập lại sau ít phút!'));
-      } else {
-        emit(LoginFailedState(
-            message: 'Tài khoản hoặc mật khẩu không chính xác'));
+
+      if (response.status == ResponseStatus.success && response.data != null) {
+        emit(LoginSuccessState(loginResponse: response.data!));
+        localDataAccess.setAccessToken(response.data!.idToken);
+        localDataAccess.setUsername(event.username.toString());
+        localDataAccess.setPassword(event.password.toString());
+        localDataAccess.setAccountRemember(event.rememberMe);
+      } else if (response.status == ResponseStatus.error) {
+        emit(LoginFailedState(message: response.message));
       }
     }
   }

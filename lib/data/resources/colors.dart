@@ -1,9 +1,9 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 class AppColor {
   static const Color primaryColor = Color.fromARGB(255, 8, 60, 122);
+  static const MaterialColor primarySwatch = Colors.teal;
   static const Color secondaryColor = Color.fromARGB(255, 207, 26, 2);
   static const Color labelColor = Color.fromARGB(255, 84, 211, 194);
   static const Color bgColor = Color.fromARGB(255, 255, 255, 255);

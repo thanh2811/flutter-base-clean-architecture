@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/user_repository.dart';
+import '../../../data/repository/remote/repository.dart';
+
 
 part 'home_event.dart';
 part 'home_state.dart';

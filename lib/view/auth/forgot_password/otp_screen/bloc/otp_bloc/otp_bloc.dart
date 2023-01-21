@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../data/model/auth/forgot_password_method.dart';
-import '../../../../../../data/repository/user_repository.dart';
+import '../../../../../../data/repository/remote/repository.dart';
 
 part 'otp_event.dart';
 part 'otp_state.dart';

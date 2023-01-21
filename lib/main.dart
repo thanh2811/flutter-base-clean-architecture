@@ -1,10 +1,12 @@
+import 'package:base_project/config/config.dart';
 import 'package:base_project/view/auth/login_screen/login_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'data/resources/colors.dart';
 import 'di/network_injection.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,13 +21,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [Locale('vi')],
-      title: 'Fitolabs DMS',
+      title: AppConfig.appName,
       themeMode: ThemeMode.light,
       theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
@@ -33,10 +36,10 @@ class MyApp extends StatelessWidget {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }),
           backgroundColor: Colors.white,
-          primarySwatch: Colors.teal,
+          primarySwatch: AppConfig.primarySwatch,
           canvasColor: Colors.grey,
-          fontFamily: "Lato",
-          primaryColor: AppColor.primaryColor),
+          fontFamily: AppConfig.fontFamily,
+          primaryColor: AppConfig.primaryColor),
       debugShowCheckedModeBanner: true,
       home: const LoginScreen(),
     );

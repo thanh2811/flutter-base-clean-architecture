@@ -89,7 +89,7 @@ class SharedPreferenceKey {
   static const String username = "username";
   static const String password = "password";
   static const String rememberMe = "rememberMe";
-  static const String employeeId = "employeeId";
+  static const String userId = "userId";
 }
 
 enum AppInputType {
