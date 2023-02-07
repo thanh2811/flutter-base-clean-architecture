@@ -15,40 +15,26 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # add pie chart
-  pie_chart: ^5.3.2
   # new nav bar type
-  google_nav_bar: ^5.0.6
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.1+1
   intl: ^0.17.0
   flutter_bloc: ^8.0.1
   shared_preferences: ^2.0.15
   flutter_spinkit: ^5.1.0
-  image_picker: ^0.8.5+3
-  group_radio_button: ^1.2.0
   # http client
   dio: ^4.0.6
-  # scanner qr code with camera
-  qr_code_scanner: ^1.0.0
-  # scanner qr code in gallery_images
-  scan: ^1.6.0
   fluttertoast: ^8.0.9
   get_it: ^7.2.0
   #equatable: help us compare the state between two views -> prevent to rebuild the UI unnecessary.
   equatable: ^2.0.5
-  share_plus: ^4.1.0
   #log interceptor
   pretty_dio_logger: ^1.1.1
   font_awesome_flutter: ^10.2.1
-  # for more action button
-  flutter_speed_dial: ^6.0.0
-  #loadmore:
-  pull_to_refresh: ^2.0.0
-  #widget for slidable item
-  flutter_slidable: ^2.0.0
   page_transition: ^2.0.9
-  flutter_switch: ^0.3.2
-  oauth2: ^2.0.1
+
+  #OAuth2 + openId
+  flutter_appauth: ^4.2.1
 
 dev_dependencies:
   flutter_test:

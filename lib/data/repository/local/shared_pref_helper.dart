@@ -1,7 +1,7 @@
-import 'package:base_project/data/repository/local/local_data_access.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
+import 'local_data_access.dart';
 
 class SharePrefHelper implements LocalDataAccess {
   final SharedPreferences sharedPref;
@@ -68,4 +68,11 @@ class SharePrefHelper implements LocalDataAccess {
   void setUsername(String username) {
     sharedPref.setString(SharedPreferenceKey.username, username);
   }
+  @override
+  String getRefreshToken() =>
+      sharedPref.getString(SharedPreferenceKey.refreshToken) ?? '';
+
+  @override
+  void setRefreshToken(String refreshToken) =>
+      sharedPref.setString(SharedPreferenceKey.refreshToken, refreshToken);
 }

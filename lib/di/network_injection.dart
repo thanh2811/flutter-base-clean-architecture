@@ -17,8 +17,12 @@ configureInjection() async {
   getIt.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
       dio: getIt<Dio>(), localDataAccess: getIt.get<LocalDataAccess>()));
 
-  getIt.registerLazySingleton<AppRepository>(() => AppRepositoryImpl(
-      dio: getIt<Dio>(), localDataAccess: getIt.get<LocalDataAccess>()));
+  getIt.registerLazySingleton<AppRepository>(
+    () => AppRepositoryImpl(
+        dio: getIt<Dio>(),
+        localDataAccess: getIt.get<LocalDataAccess>(),
+        openIdRepository: getIt.get<OpenIDRepository>()),
+  );
 
   getIt.registerLazySingleton<UtilityRepository>(
       <UtilityRepository>() => UtilitiesRepositoryImpl(dio: getIt<Dio>()));
