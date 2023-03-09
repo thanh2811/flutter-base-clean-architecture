@@ -1,7 +1,46 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
 
+import '../../data/constant/enum.dart';
 import '../../data/resources/colors.dart';
+
+
+class ViewUtils {
+  static void unFocusView() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  static Future<CroppedFile?> cropImage(
+      File imageFile, ImageCropStyle imageCropStyle) async =>
+      await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        cropStyle: imageCropStyle == ImageCropStyle.circle
+            ? CropStyle.circle
+            : CropStyle.rectangle,
+        aspectRatio: imageCropStyle == ImageCropStyle.circle
+            ? const CropAspectRatio(ratioX: 1, ratioY: 1)
+            : const CropAspectRatio(ratioX: 16, ratioY: 9),
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Chỉnh sửa',
+              toolbarColor: AppColor.primaryColor,
+              activeControlsWidgetColor: AppColor.primaryColor,
+              showCropGrid: false,
+              toolbarWidgetColor: Colors.white,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Chỉnh sửa',
+          ),
+        ],
+      );
+
+}
 
 toastWarning(String text) => Fluttertoast.showToast(
     msg: text,

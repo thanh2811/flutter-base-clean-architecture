@@ -144,7 +144,7 @@ class AppTextTheme {
   static const TextStyle textHintPrimary = TextStyle(
     color: Color.fromARGB(255, 97, 97, 97),
     overflow: TextOverflow.ellipsis,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     fontSize: 16,
   );
 

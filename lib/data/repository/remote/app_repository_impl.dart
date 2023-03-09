@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:base_project/data/repository/local/local_data_access.dart';
-import 'package:base_project/data/repository/remote/app_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -53,7 +52,7 @@ class AppRepositoryImpl implements AppRepository {
       },
     ));
     final BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.appBaseUrl,
+      baseUrl: Environment.resourcesBaseUrl,
       sendTimeout: 30000,
       receiveTimeout: 30000,
       followRedirects: false,

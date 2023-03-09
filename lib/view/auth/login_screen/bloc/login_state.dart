@@ -9,6 +9,12 @@ abstract class LoginState {
 
 class LoginInitial extends LoginState {}
 
+class LoginGetUsernameState extends LoginState {
+  final String username;
+
+  LoginGetUsernameState({required this.username});
+}
+
 class LoginGetLocalInfoState extends LoginState {
   final String username;
   final String password;
@@ -16,18 +22,27 @@ class LoginGetLocalInfoState extends LoginState {
 
   LoginGetLocalInfoState(
       {required this.username,
-      required this.password,
-      required this.accountRemember});
+        required this.password,
+        required this.accountRemember});
 }
 
 class LoginLoadingState extends LoginState {}
 
+class LoginBySSOLoadingState extends LoginState {}
+
+class LoginBySSOSuccessState extends LoginState {}
+
+class LoginBySSOErrorState extends LoginState {
+  final String message;
+
+  LoginBySSOErrorState(this.message);
+}
+
 class LoginFieldRequiredState extends LoginState {}
 
 class LoginSuccessState extends LoginState {
-  LoginResponse loginResponse;
-
-  LoginSuccessState({required this.loginResponse});
+  // LoginResponse loginResponse;
+  LoginSuccessState();
 }
 
 class LoginFailedState extends LoginState {
@@ -38,12 +53,10 @@ class LoginFailedState extends LoginState {
 
 class LoginRememberState extends LoginState {
   bool remember;
-
   LoginRememberState(this.remember);
 }
 
 class LoginShowPasswordState extends LoginState {
   bool showPassword;
-
   LoginShowPasswordState({required this.showPassword});
 }

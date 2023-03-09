@@ -1,10 +1,11 @@
-import 'package:base_project/data/model/login/login_response.dart';
 import 'package:dio/dio.dart';
-
 import '../../model/api/base_response.dart';
+import '../../model/login/login_response.dart';
 
 abstract class UserRepository {
-  Future<ResponseWrapper<LoginResponse>> login({
+  UserRepository();
+
+  Future<ResponseWrapper<LoginResponse>> loginRequest({
     required String username,
     required String password,
     required bool rememberMe,
@@ -22,6 +23,11 @@ abstract class UserRepository {
       required String username,
       required String key});
 
+  Future<Response> vcfFile({required String username, required Object body});
+
+  Future<Response> getDetailMedia(
+      {required String memberId, required String type});
+
   Future<Response> verifiedEmailOtp(
       {required String username, required String value});
 
@@ -29,10 +35,6 @@ abstract class UserRepository {
       {required String username, required String key});
 
   Future<Response> getInformation();
-
-  Future<Response> getAccountInfo();
-
-  Future<Response> getEmployeeInfo();
 
   Future<Response> changePassword(
       {required String currentPassword, required String newPassword});

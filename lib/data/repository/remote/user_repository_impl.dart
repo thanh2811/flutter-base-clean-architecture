@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:base_project/data/model/api/base_response.dart';
-import 'package:base_project/data/model/login/login_response.dart';
-import 'package:base_project/data/repository/local/local_data_access.dart';
-import 'package:base_project/data/repository/remote/user_repository.dart';
-import 'package:base_project/services/exceptions/handle_exception.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../config/config.dart';
+import '../../exceptions/handle_exception.dart';
+import '../../model/api/base_response.dart';
+import '../../model/login/login_response.dart';
+import '../local/local_data_access.dart';
+import 'repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final Dio dio;
@@ -26,7 +25,7 @@ class UserRepositoryImpl implements UserRepository {
       requestHeader: true,
     ));
     final BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.resourcesBaseUrl,
+      baseUrl: Environment.resourcesBaseUrl,
       sendTimeout: 30000,
       receiveTimeout: 30000,
       followRedirects: false,
@@ -42,10 +41,11 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<ResponseWrapper<LoginResponse>> login(
-      {required String username,
-      required String password,
-      required bool rememberMe}) async {
+  Future<ResponseWrapper<LoginResponse>> loginRequest({
+    required String username,
+    required String password,
+    required bool rememberMe,
+  }) async {
     try {
       final loginResponse = await dio.post(
         EndPoints.login,
@@ -55,16 +55,20 @@ class UserRepositoryImpl implements UserRepository {
           'rememberMe': rememberMe
         },
       );
-      if(loginResponse.statusCode == 200) {
-        return ResponseWrapper.success(data: LoginResponse.fromJson(loginResponse.data)) ;
-      }else if(loginResponse.statusCode == 400 || loginResponse.statusCode == 401){
-        return ResponseWrapper.error(message: 'Tài khoản hoặc mật khẩu không chính xác', statusCode: loginResponse.statusCode);
-      }
-      else{
-        return ResponseWrapper.error(message: 'Đăng nhập thất bại', statusCode: loginResponse.statusCode);
+      if (loginResponse.statusCode == 200) {
+        return ResponseWrapper.success(
+            data: LoginResponse.fromJson(loginResponse.data));
+      } else if (loginResponse.statusCode == 400 ||
+          loginResponse.statusCode == 401) {
+        return ResponseWrapper.error(
+            message: 'Tài khoản hoặc mật khẩu không chính xác',
+            statusCode: loginResponse.statusCode);
+      } else {
+        return ResponseWrapper.error(
+            message: 'Đăng nhập thất bại',
+            statusCode: loginResponse.statusCode);
       }
     } on Exception catch (e) {
-      log('exception: $e');
       handleException(e);
       return ResponseWrapper.error(message: 'message');
     }
@@ -162,22 +166,20 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Response> getAccountInfo() async {
-    final String accessToken = localDataAccess.getAccessToken();
-    final response = await dio.get(EndPoints.getAccountInfo,
-        options: Options(
-          headers: {'Authorization': 'Bearer $accessToken'},
-        ));
+  Future<Response> vcfFile(
+      {required String username, required Object body}) async {
+    final mBody = jsonEncode(body);
+    final response = await dio.post('/gateway/Member/vcfFile',
+        data: mBody, queryParameters: {"Username": username});
     return response;
   }
 
   @override
-  Future<Response> getEmployeeInfo() async {
-    final String accessToken = localDataAccess.getAccessToken();
-    final response = await dio.get(EndPoints.getEmployeeByIdForUser,
-        options: Options(
-          headers: {'Authorization': 'Bearer $accessToken'},
-        ));
+  Future<Response> getDetailMedia(
+      {required String memberId, required String type}) async {
+    final response = await dio.get(
+        '${Environment.resourcesBaseUrl}/gateway/Member/memberViewMemberDetailMedia',
+        queryParameters: {"memberId": memberId, "type": type});
     return response;
   }
 }

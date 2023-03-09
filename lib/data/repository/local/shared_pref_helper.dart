@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constants.dart';
+import '../../constant/constants.dart';
 import 'local_data_access.dart';
 
 class SharePrefHelper implements LocalDataAccess {

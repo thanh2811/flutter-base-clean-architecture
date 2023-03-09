@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../config/config.dart';
-import '../../../services/exceptions/handle_exception.dart';
+import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';
 import '../../model/public_api/location.dart';
 

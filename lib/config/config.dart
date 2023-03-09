@@ -1,15 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../data/resources/colors.dart';
 
+class Environment {
+  static String fileName =
+      kDebugMode ? 'app_config_test.env' : 'app_config_product.env';
+  static String domain = dotenv.env['DOMAIN'] ?? '';
+  static String resourcesBaseUrl = dotenv.env['BASE_RESOURCE_URL'] ?? '';
+  static String ssoBaseUrl = dotenv.env['SSO_BASE_URL'] ?? '';
+  static String cdnBaseUrl = dotenv.env['CDN_BASE_URL'] ?? '';
+}
+
 class EndPoints {
-  static const String baseDomain = "https://fitolabs.eztek.net";
-  static const String resourcesBaseUrl = "https://fitolabs-id.eztek.net";
-  static const String ssoBaseUrl = "https://id-test.trueconnect.vn";
-  static const String appBaseUrl = "https://fitolabs-m.eztek.net";
-  static const String cdnBaseUrl = "https://cdn-fitolabs.eztek.net";
-
-
   // sso related
   static const String getUserInfoSSO = '/user/updateinfo';
 
@@ -37,12 +41,16 @@ class EndPoints {
 
 class SSOConfig {
   static const String clientId = "localhost_identity";
+
   // static const String clientId = "eztek_resource_planning";
   static const String redirectUrl = "com.eztek.trueconnect://login-callback";
+
   // static const String redirectUrl = "https:google.com";
   static const String issuer = 'https://id-test.trueconnect.vn';
+
   // static const String issuer = 'https://id.eztek.net';
   static const String clientSecret = 'no_important';
+
   // static const String clientSecret = 'M)rVENCz5GFT@yPR';
   static const List<String> scope = [
     "openid",

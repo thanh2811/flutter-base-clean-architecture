@@ -5,7 +5,7 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../config/config.dart';
-import '../../../services/exceptions/handle_exception.dart';
+import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';
 import '../../model/sso/user_sso.dart';
 import '../local/local_data_access.dart';
@@ -23,7 +23,7 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
       requestHeader: true,
     ));
     final BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.ssoBaseUrl,
+      baseUrl: Environment.ssoBaseUrl,
       sendTimeout: 30000,
       receiveTimeout: 30000,
       followRedirects: false,

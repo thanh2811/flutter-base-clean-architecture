@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 class AppColor {
   static const Color primaryColor = Color.fromARGB(255, 8, 60, 122);
   static const MaterialColor primarySwatch = Colors.teal;
   static const Color secondaryColor = Color.fromARGB(255, 207, 26, 2);
+  static const Color transparent = Colors.transparent;
   static const Color labelColor = Color.fromARGB(255, 84, 211, 194);
   static const Color bgColor = Color.fromARGB(255, 255, 255, 255);
   static const Color titleColor = Color.fromARGB(255, 0, 0, 0);
@@ -33,4 +33,10 @@ class AppColor {
   static const Color errorColor = Color(0xFFD82F1A);
   static const Color cyanBorderColor = Color(0xFF75DBCD);
   static const Color bgF2Color = Color(0xFFE4FEFA);
+
+  static const Color neutral5 = Color(0xFFD9D9D9);
+  static const Color red = Color(0xFFFF4D4F);
+  static const Color gray04 = Color(0xFF727276);
+  static const Color gray05 = Color(0xFF8E8E93);
+  static const Color gray09 = Color(0xFFDDDDDF);
 }
