@@ -5,8 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import '../../data/constant/enum.dart';
-import '../../data/resources/colors.dart';
-
+import '../../data/resources/resources.dart';
+import '../../main.dart';
+import 'dialog_helper.dart';
 
 class ViewUtils {
   static void unFocusView() {
@@ -14,7 +15,7 @@ class ViewUtils {
   }
 
   static Future<CroppedFile?> cropImage(
-      File imageFile, ImageCropStyle imageCropStyle) async =>
+          File imageFile, ImageCropStyle imageCropStyle) async =>
       await ImageCropper().cropImage(
         sourcePath: imageFile.path,
         cropStyle: imageCropStyle == ImageCropStyle.circle
@@ -39,7 +40,26 @@ class ViewUtils {
           ),
         ],
       );
+}
 
+void showGlobalDialog(
+    {required String message,
+    DialogType dialogType = DialogType.alert,
+    Function(dynamic value)? callbackWhenDismiss}) async {
+  switch (dialogType) {
+    case DialogType.alert:
+      await showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) => getErrorDialog(
+          context: context,
+          message: message,
+        ),
+      ).then((value) =>
+          callbackWhenDismiss != null ? callbackWhenDismiss(value) : null);
+      break;
+    case DialogType.datePicker:
+      break;
+  }
 }
 
 toastWarning(String text) => Fluttertoast.showToast(
@@ -69,3 +89,31 @@ Future<DateTime?> getDatePicker(BuildContext context) async {
       lastDate: DateTime.now());
   return select;
 }
+
+Future<CroppedFile?> cropImage(
+        File imageFile, ImageCropStyle imageCropStyle) async =>
+    await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      cropStyle: imageCropStyle == ImageCropStyle.circle
+          ? CropStyle.circle
+          : CropStyle.rectangle,
+      aspectRatio: imageCropStyle == ImageCropStyle.circle ||
+              imageCropStyle == ImageCropStyle.square
+          ? const CropAspectRatio(ratioX: 1, ratioY: 1)
+          : const CropAspectRatio(ratioX: 16, ratioY: 9),
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Chỉnh sửa',
+            toolbarColor: AppColor.primaryColor,
+            activeControlsWidgetColor: AppColor.primaryColor,
+            showCropGrid: false,
+            toolbarWidgetColor: Colors.white,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Chỉnh sửa',
+        ),
+      ],
+    );

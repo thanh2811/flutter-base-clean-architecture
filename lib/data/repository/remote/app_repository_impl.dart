@@ -1,11 +1,12 @@
 import 'dart:developer';
 
-import 'package:base_project/data/repository/local/local_data_access.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../config/config.dart';
 import '../../model/api/base_response.dart';
+import '../interceptor/dio_base_options.dart';
+import '../local/local_data_access.dart';
 import 'repository.dart';
 
 class AppRepositoryImpl implements AppRepository {
@@ -23,7 +24,7 @@ class AppRepositoryImpl implements AppRepository {
       requestBody: true,
       requestHeader: true,
     ));
-    
+
     // interceptor
     dio.interceptors.add(QueuedInterceptorsWrapper(
       onRequest: (options, handler) async {
@@ -51,19 +52,7 @@ class AppRepositoryImpl implements AppRepository {
         }
       },
     ));
-    final BaseOptions options = BaseOptions(
-      baseUrl: Environment.resourcesBaseUrl,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      followRedirects: false,
-      validateStatus: (status) {
-        return status! <= 500;
-      },
-      headers: {
-        "Accept": "application/json",
-        "content-type": "application/json"
-      },
-    );
-    dio.options = options;
+    dio.options =
+        DioBaseOptions(baseUrl: Environment.resourcesBaseUrl).baseOption;
   }
 }

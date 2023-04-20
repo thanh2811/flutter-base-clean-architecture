@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../data/resources/colors.dart';
 import '../../../data/resources/themes.dart';
 import '../something/bouncing.dart';
-import '../loading.dart';
+import '../something/loading.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -52,7 +52,8 @@ class PrimaryButton extends StatelessWidget {
         // // highlightElevation: 26,
         // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
         style: ButtonStyle(
-          fixedSize: isCircle ? MaterialStateProperty.all(const Size(0, 0)) : null,
+          fixedSize:
+              isCircle ? MaterialStateProperty.all(const Size(0, 0)) : null,
           backgroundColor: MaterialStateProperty.all(
             backgroundColor ?? AppColor.primaryColor,
           ),
@@ -92,7 +93,7 @@ class PrimaryButton extends StatelessWidget {
                     ? const SizedBox(width: 5)
                     : Container(),
             isLoading
-                ?  const Loading(
+                ? const Loading(
                     backgroundColor: AppColor.transparent,
                     spinnerColor: AppColor.white,
                     spinnerSize: 22.5,

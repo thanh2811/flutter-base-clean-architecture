@@ -1,12 +1,12 @@
 name: base_project
 description: Base project to start a new project
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -46,6 +46,7 @@ dependencies:
   pretty_dio_logger: ^1.1.1
   font_awesome_flutter: ^10.2.1
   page_transition: ^2.0.9
+  cached_network_image: ^3.2.3
 
   #OAuth2 + openId
   flutter_appauth: ^4.2.1
@@ -57,7 +58,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
   uses-material-design: true
 
   assets:
@@ -77,4 +77,3 @@ flutter:
         - asset: assets/fonts/Quicksand-Light.ttf
         - asset: assets/fonts/Quicksand-Bold.ttf
         - asset: assets/fonts/Quicksand-SemiBold.ttf
-

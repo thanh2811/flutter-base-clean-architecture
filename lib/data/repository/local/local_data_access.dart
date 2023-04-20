@@ -1,6 +1,8 @@
 abstract class LocalDataAccess {
   void clearAccessToken();
 
+  void clearRefreshToken();
+
   String getAccessToken();
 
   void setAccessToken(String accessToken);

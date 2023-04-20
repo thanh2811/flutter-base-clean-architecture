@@ -8,6 +8,7 @@ import '../../../config/config.dart';
 import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';
 import '../../model/login/login_response.dart';
+import '../interceptor/dio_base_options.dart';
 import '../local/local_data_access.dart';
 import 'repository.dart';
 
@@ -24,20 +25,8 @@ class UserRepositoryImpl implements UserRepository {
       requestBody: true,
       requestHeader: true,
     ));
-    final BaseOptions options = BaseOptions(
-      baseUrl: Environment.resourcesBaseUrl,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      followRedirects: false,
-      validateStatus: (status) {
-        return status! <= 500;
-      },
-      headers: {
-        "Accept": "application/json",
-        "content-type": "application/json"
-      },
-    );
-    dio.options = options;
+    dio.options =
+        DioBaseOptions(baseUrl: Environment.resourcesBaseUrl).baseOption;
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
@@ -10,6 +11,10 @@ class Utils {
     } catch (e) {
       return strDate;
     }
+  }
+
+  static String formatTime(TimeOfDay strTime) {
+    return "${strTime.hour}:${strTime.minute}";
   }
 
   static String toStringIsoDate(String strDate) {
@@ -51,10 +56,22 @@ class Utils {
     try {
       final now = DateTime.now();
       final dateTime = DateTime.parse(strDateTime);
-      final diff = dateTime.difference(DateTime(now.year, now.month, now.day));
+      final diff = DateTime(dateTime.year, dateTime.month, dateTime.day)
+          .difference(DateTime(now.year, now.month, now.day));
+      return diff.inMilliseconds == 0;
+    } catch (e) {
+      return false;
+    }
+  }
 
-      return diff.inMilliseconds > 0 &&
-          diff.inMilliseconds < 24 * 60 * 60 * 1000;
+  static bool isSameDay(String strDate1, String strDate2) {
+    if (strDate1.isEmpty || strDate2.isEmpty) return false;
+    try {
+      final date1 = DateTime.parse(strDate1);
+      final date2 = DateTime.parse(strDate2);
+      final diff = DateTime(date1.year, date1.month, date1.day)
+          .difference(DateTime(date2.year, date2.month, date2.day));
+      return diff.inMilliseconds == 0;
     } catch (e) {
       return false;
     }
@@ -87,4 +104,52 @@ class Utils {
     return formatDate.format(time);
     //   }
   }
+
+  static String? textEmptyValidator(
+    String? text,
+  ) {
+    if (text == null || text.isEmpty || text.toString().trim().isEmpty) {
+      return 'Không được để trống';
+    }
+    return null;
+  }
+
+  static String intToHexadecimal(int value) {
+    return "#${value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}";
+  }
+
+  // static launchUri(String uriPath, UriType uriType, {LaunchMode? mode}) async {
+  //   final Uri uri;
+  //   switch (uriType) {
+  //     case UriType.phone:
+  //       uri = Uri(
+  //         scheme: 'tel',
+  //         path: uriPath,
+  //       );
+  //       break;
+  //     case UriType.email:
+  //       uri = Uri(
+  //         scheme: 'mailto',
+  //         path: uriPath,
+  //       );
+  //       break;
+  //     case UriType.website:
+  //       uri = Uri.parse(uriPath);
+  //       break;
+  //     case UriType.zalo:
+  //       uri = Uri(
+  //         scheme: 'https://zalo.me/',
+  //         path: uriPath,
+  //       );
+  //       break;
+  //     case UriType.sms:
+  //       uri = Uri(scheme: 'sms', path: uriPath);
+  //   }
+
+  //   if (await canLaunchUrl(uri)) {
+  //     await launchUrl(uri, mode: mode ?? LaunchMode.externalApplication);
+  //   } else {
+  //     toastWarning('Không thể mở đường dẫn tới liên kết này');
+  //   }
+  // }
 }

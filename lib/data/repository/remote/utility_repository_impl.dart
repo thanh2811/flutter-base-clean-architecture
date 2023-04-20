@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:base_project/data/repository/remote/utility_repository.dart';
+import 'package:base_project/data/repository/interceptor/dio_base_options.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -8,6 +8,7 @@ import '../../../config/config.dart';
 import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';
 import '../../model/public_api/location.dart';
+import 'repository.dart';
 
 class UtilitiesRepositoryImpl implements UtilityRepository {
   final Dio dio;
@@ -18,20 +19,8 @@ class UtilitiesRepositoryImpl implements UtilityRepository {
       requestBody: true,
       requestHeader: true,
     ));
-    final BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.publicAddressBaseUrl,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      followRedirects: false,
-      validateStatus: (status) {
-        return status! <= 500;
-      },
-      headers: {
-        "Accept": "application/json",
-        "content-type": "application/json"
-      },
-    );
-    dio.options = options;
+    dio.options =
+        DioBaseOptions(baseUrl: EndPoints.publicAddressBaseUrl).baseOption;
   }
 
   @override
@@ -75,10 +64,10 @@ class UtilitiesRepositoryImpl implements UtilityRepository {
       List<Ward> communeList = [];
       if (response.statusCode == 200) {
         communeList = Province.fromJson(response.data)
-            .districts
-            ?.where((element) => element.code == districtId)
-            .first
-            .wards ??
+                .districts
+                ?.where((element) => element.code == districtId)
+                .first
+                .wards ??
             [];
         return ResponseWrapper.success(data: communeList);
       }

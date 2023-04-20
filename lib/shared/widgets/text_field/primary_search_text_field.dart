@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../../data/resources/strings.dart';
-
-
 class PrimarySearchTextField extends StatefulWidget {
   const PrimarySearchTextField({
     Key? key,
@@ -14,9 +11,11 @@ class PrimarySearchTextField extends StatefulWidget {
     this.debounce = 1000,
     required this.controller,
     required this.onChanged,
+    this.hintText,
   }) : super(key: key);
 
   final String label;
+  final String? hintText;
   final dynamic prefixIcon;
   final String? suffixIcon;
   final TextEditingController controller;
@@ -41,7 +40,7 @@ class _PrimarySearchTextFieldState extends State<PrimarySearchTextField> {
     return TextField(
       onChanged: _onSearchChanged,
       decoration: InputDecoration(
-          hintText: hintTextSearch,
+          hintText: widget.hintText,
           prefixIcon: IconButton(
             onPressed: () {},
             icon: const Icon(Icons.search),

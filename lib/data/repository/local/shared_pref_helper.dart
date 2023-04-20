@@ -14,6 +14,11 @@ class SharePrefHelper implements LocalDataAccess {
   }
 
   @override
+  void clearRefreshToken() {
+    sharedPref.remove(SharedPreferenceKey.refreshToken);
+  }
+
+  @override
   String getAccessToken() {
     return sharedPref.getString(SharedPreferenceKey.idToken) ?? '';
   }
@@ -68,6 +73,7 @@ class SharePrefHelper implements LocalDataAccess {
   void setUsername(String username) {
     sharedPref.setString(SharedPreferenceKey.username, username);
   }
+
   @override
   String getRefreshToken() =>
       sharedPref.getString(SharedPreferenceKey.refreshToken) ?? '';

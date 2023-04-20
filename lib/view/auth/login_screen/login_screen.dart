@@ -1,19 +1,15 @@
 // ignore_for_file: use_build_context_synchronously, empty_catches
 import 'package:base_project/config/routes.dart';
 import 'package:base_project/data/repository/remote/open_id_repository.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/repository/remote/user_repository.dart';
 import '../../../data/resources/colors.dart';
-import '../../../data/resources/themes.dart';
 import '../../../di/network_injection.dart';
 import '../../../shared/utils/dialog_helper.dart';
 import '../../../shared/utils/view_utils.dart';
 import '../../../shared/widgets/button/primary_button.dart';
-import '../../../shared/widgets/text_field/secondary_text_field.dart';
-import '../../home_screen/home_screen.dart';
 import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,8 +20,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _obscureText = true;
-  bool _rememberMe = true;
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -256,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // ),
                 BlocBuilder<LoginBloc, LoginState>(
                   buildWhen: (pre, current) =>
-                  current is LoginBySSOLoadingState ||
+                      current is LoginBySSOLoadingState ||
                       current is LoginBySSOSuccessState ||
                       current is LoginBySSOErrorState,
                   builder: (context, state) {

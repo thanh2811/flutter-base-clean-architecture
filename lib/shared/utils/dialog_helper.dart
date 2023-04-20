@@ -1,11 +1,9 @@
-import 'package:base_project/shared/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../data/model/public_api/location.dart';
-import '../../data/resources/colors.dart';
-import '../../data/resources/themes.dart';
+import '../../data/resources/resources.dart';
 import '../widgets/button/primary_button.dart';
+import '../widgets/something/loading.dart';
 import '../widgets/text_field/primary_search_text_field.dart';
 
 Dialog getAddressDialog({required List<dynamic> data}) {
@@ -146,10 +144,7 @@ Dialog getLoadingDialog() {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: const [
-        SpinKitFadingCircle(
-          color: AppColor.white,
-          duration: Duration(milliseconds: 500),
-        ),
+        Loading(),
       ],
     ),
   );
@@ -224,7 +219,7 @@ Dialog getAlertDialog({
         children: [
           Text(
             title,
-            style: AppTextTheme.textPageTitle,
+            style: AppTextTheme.textPrimaryBold,
           ),
           const SizedBox(
             height: 15,
