@@ -18,10 +18,11 @@ enum DialogType {
   datePicker,
 }
 
-enum ImageCropStyle { circle, rect }
+enum ImageCropStyle { circle, rect, square }
 
 enum ImageType {
   none,
   avatar,
   cover,
+  square,
 }
