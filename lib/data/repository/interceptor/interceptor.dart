@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import '../../../di/network_injection.dart';
+import '../../../di/di.dart';
 import '../../../main.dart';
-import '../../../shared/utils/view_utils.dart';
+import '../../../shared/utils/dialog_helper.dart';
 import '../../../view/auth/login_screen/login_screen.dart';
 import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';

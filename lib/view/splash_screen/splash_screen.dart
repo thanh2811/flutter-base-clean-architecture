@@ -1,14 +1,11 @@
 import 'dart:async';
 
 import 'package:base_project/config/routes.dart';
+import 'package:base_project/shared/bloc/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:upgrader/upgrader.dart';
-
-import '../../data/repository/local/local_data_access.dart';
-import '../../di/network_injection.dart';
-import 'bloc/authentication_bloc.dart';
 
 // ignore: must_be_immutable
 class SplashScreen extends StatelessWidget {
@@ -26,19 +23,17 @@ class SplashScreen extends StatelessWidget {
     );
 
     return BlocProvider(
-      create: (_) =>
-          AuthenticationBloc(localDataAccess: getIt.get<LocalDataAccess>())
-            ..add(AuthenticationInitialEvent()),
+      create: (_) => AuthBloc()..add(AuthCheckCurrentSessionEvent()),
       child: UpgradeAlert(
         upgrader: upGrader,
-        child: BlocListener<AuthenticationBloc, AuthenticationState>(
+        child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is AuthenticationInitSuccessState) {
+            if (state is AuthSessionValidState) {
               Timer(const Duration(seconds: 1), () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, AppRoute.home, (route) => false);
               });
-            } else if (state is AuthenticationInitErrorState) {
+            } else if (state is AuthSessionInvalidState) {
               // (duration)
               Future.delayed(const Duration(seconds: 1), () {
                 // if app is not opened by appLinking

@@ -1,16 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, empty_catches
 import 'package:base_project/config/routes.dart';
-import 'package:base_project/data/repository/remote/open_id_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/remote/user_repository.dart';
 import '../../../data/resources/colors.dart';
-import '../../../di/network_injection.dart';
+import '../../../shared/bloc/auth/auth_bloc.dart';
 import '../../../shared/utils/dialog_helper.dart';
 import '../../../shared/utils/view_utils.dart';
 import '../../../shared/widgets/button/primary_button.dart';
-import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,27 +17,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   late BuildContext dialogContext;
 
-  late LoginBloc _loginBloc;
+  late AuthBloc _authBloc;
 
   @override
   void initState() {
     super.initState();
-    _loginBloc = LoginBloc(
-        userRepository: getIt.get<UserRepository>(),
-        openIDRepository: getIt.get<OpenIDRepository>())
-      ..add(LoginInitEvent());
+    _authBloc = AuthBloc()..add(AuthInitEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (context) => _loginBloc,
+    return BlocProvider<AuthBloc>(
+      create: (context) => _authBloc,
       child: Scaffold(
         backgroundColor: AppColor.primaryBackgroundColor,
         body: SafeArea(
@@ -62,20 +55,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                BlocListener<LoginBloc, LoginState>(
+                BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
-                    if (state is LoginFieldRequiredState) {
-                      toastWarning(
+                    if (state is AuthFieldRequiredState) {
+                      ViewUtils.toastWarning(
                           'Tên đăng nhập và mật khẩu không được bỏ trống');
                     }
-                    if (state is LoginLoadingState) {
+                    if (state is AuthLoadingState) {
                       showDialog(
                         context: context,
                         builder: (context) => getLoadingDialog(),
                         barrierDismissible: false,
                       );
                     }
-                    if (state is LoginSuccessState) {
+                    if (state is AuthLoginSuccessState) {
                       WidgetsBinding.instance
                           .addPostFrameCallback(((timeStamp) {
                         Navigator.of(context, rootNavigator: true).pop();
@@ -87,11 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       }));
                     }
-                    if (state is LoginFailedState) {
+                    if (state is AuthLoginFailedState) {
                       Navigator.of(context, rootNavigator: true).pop();
-                      toastWarning(state.message!);
+                      ViewUtils.toastWarning(state.message!);
                     }
-                    if (state is LoginGetLocalInfoState) {
+                    if (state is AuthGetLocalInfoState) {
                       usernameController.text = state.username;
                       passwordController.text = state.password;
                     }
@@ -127,9 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 // const SizedBox(
                 //   height: 8,
                 // ),
-                // BlocBuilder<LoginBloc, LoginState>(
+                // BlocBuilder<AuthBloc, AuthState>(
                 //   buildWhen: (pre, current) =>
-                //       current is LoginShowPasswordState,
+                //       current is AuthShowPasswordState,
                 //   builder: (context, state) {
                 //     return SecondaryTextField(
                 //       controller: passwordController,
@@ -140,8 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 //       suffixIcon: IconButton(
                 //         onPressed: () {
                 //           _obscureText = !_obscureText;
-                //           _loginBloc.add(
-                //             LoginShowPasswordEvent(
+                //           _authBloc.add(
+                //             AuthShowPasswordEvent(
                 //                 showPassword: _obscureText),
                 //           );
                 //         },
@@ -173,14 +166,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 //     //     value: _rememberMe,
                 //     //     onChanged: (bool? value) {
                 //     //       _rememberMe = value!;
-                //     //       _loginBloc.add(LoginRememberEvent(_rememberMe));
+                //     //       _authBloc.add(AuthRememberEvent(_rememberMe));
                 //     //     },
                 //     //   ),
                 //     // ),
                 //     // GestureDetector(
                 //     //   onTap: () {
                 //     //     _rememberMe = !_rememberMe;
-                //     //     _loginBloc.add(LoginRememberEvent(_rememberMe));
+                //     //     _authBloc.add(AuthRememberEvent(_rememberMe));
                 //     //   },
                 //     //   child: const Text(
                 //     //     'Nhớ tài khoản',
@@ -189,9 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 //     //   ),
                 //     // ),
                 //     Expanded(
-                //       child: BlocBuilder<LoginBloc, LoginState>(
+                //       child: BlocBuilder<AuthBloc, AuthState>(
                 //         buildWhen: (pre, current) =>
-                //             current is LoginRememberState,
+                //             current is AuthRememberState,
                 //         builder: (context, state) {
                 //           return CheckboxListTile(
                 //               controlAffinity:
@@ -200,8 +193,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 //               value: _rememberMe,
                 //               onChanged: (value) {
                 //                 _rememberMe = !_rememberMe;
-                //                 _loginBloc
-                //                     .add(LoginRememberEvent(_rememberMe));
+                //                 _authBloc
+                //                     .add(AuthRememberEvent(_rememberMe));
                 //               },
                 //               contentPadding: EdgeInsets.zero,
                 //               selectedTileColor: Colors.red,
@@ -239,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // PrimaryButton(
                 //     context: context,
                 //     onPressed: () {
-                //       _loginBloc.add(LoginRequestEvent(
+                //       _authBloc.add(AuthRequestEvent(
                 //           username: usernameController.text,
                 //           password: passwordController.text,
                 //           rememberMe: _rememberMe));
@@ -248,13 +241,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 // const SizedBox(
                 //   height: 10,
                 // ),
-                BlocBuilder<LoginBloc, LoginState>(
+                BlocBuilder<AuthBloc, AuthState>(
                   buildWhen: (pre, current) =>
-                      current is LoginBySSOLoadingState ||
-                      current is LoginBySSOSuccessState ||
-                      current is LoginBySSOErrorState,
+                      current is AuthLoginBySSOLoadingState ||
+                      current is AuthLoginBySSOSuccessState ||
+                      current is AuthLoginBySSOErrorState,
                   builder: (context, state) {
-                    if (state is LoginBySSOLoadingState) {
+                    if (state is AuthLoginBySSOLoadingState) {
                       return PrimaryButton(
                           context: context,
                           isLoading: true,
@@ -266,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           context: context,
                           // backgroundColor: AppColor.secondaryColor,
                           onPressed: () {
-                            _loginBloc.add(LoginBySSORequestEvent());
+                            _authBloc.add(AuthLoginBySSORequestEvent());
                           },
                           label: "Đăng Nhập Với True Connect");
                     }

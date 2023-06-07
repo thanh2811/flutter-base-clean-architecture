@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 import '../data/model/api/error_response.dart';
-import '../shared/utils/view_utils.dart';
+import '../shared/utils/dialog_helper.dart';
 import 'app_exception.dart';
 
 void handleException(

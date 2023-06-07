@@ -5,37 +5,32 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../config/config.dart';
+import '../../../di/di.dart';
 import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';
 import '../../model/sso/user_sso.dart';
+import '../interceptor/dio_base_options.dart';
 import '../local/local_data_access.dart';
-import 'repository.dart';
+import 'open_id_repository.dart';
 
 class OpenIDRepositoryImpl implements OpenIDRepository {
-  final LocalDataAccess localDataAccess;
+  final LocalDataAccess localDataAccess = getIt.get<LocalDataAccess>();
+  // final AppInterceptor appInterceptor = AppInterceptor();
+
   final FlutterAppAuth appAuth = const FlutterAppAuth();
   final Dio dio;
 
-  OpenIDRepositoryImpl({required this.dio, required this.localDataAccess}) {
+  OpenIDRepositoryImpl({
+    required this.dio,
+  }) {
     dio.interceptors.add(PrettyDioLogger(
       responseBody: true,
       requestBody: true,
       requestHeader: true,
     ));
-    final BaseOptions options = BaseOptions(
-      baseUrl: Environment.ssoBaseUrl,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      followRedirects: false,
-      validateStatus: (status) {
-        return status! <= 500;
-      },
-      headers: {
-        "Accept": "application/json",
-        "content-type": "application/json"
-      },
-    );
-    dio.options = options;
+
+    // dio.interceptors.add(appInterceptor.queueInterceptor(dio: dio));
+    dio.options = DioBaseOptions(baseUrl: SSOConfig.issuer).baseOption;
   }
 
   @override
@@ -48,12 +43,20 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
           SSOConfig.clientId,
           SSOConfig.redirectUrl,
           clientSecret: SSOConfig.clientSecret,
+          // promptValues: ['login'],
           issuer: SSOConfig.issuer,
           scopes: SSOConfig.scope,
+          serviceConfiguration: const AuthorizationServiceConfiguration(
+            authorizationEndpoint: '${SSOConfig.issuer}/connect/authorize',
+            tokenEndpoint: '${SSOConfig.issuer}/connect/token',
+            endSessionEndpoint: '${SSOConfig.issuer}/connect/endsession',
+          ),
         ),
       );
       localDataAccess
           .setAccessToken(authorizationTokenResponse?.accessToken ?? '');
+      await localDataAccess
+          .setIdToken(authorizationTokenResponse?.idToken ?? '');
       localDataAccess
           .setRefreshToken(authorizationTokenResponse?.refreshToken ?? '');
 
@@ -67,27 +70,36 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
 
       return ResponseWrapper.success(data: authorizationTokenResponse!);
     } catch (e) {
-      return ResponseWrapper.error(message: '');
+      return ResponseWrapper.error(message: e.toString());
     }
   }
 
   @override
   Future<ResponseWrapper<bool>> refreshToken() async {
+    log(' refresh token response ???');
     final TokenRequest tokenRequest = TokenRequest(
       SSOConfig.clientId,
       SSOConfig.redirectUrl,
       clientSecret: SSOConfig.clientSecret,
       issuer: SSOConfig.issuer,
       scopes: SSOConfig.scope,
-      refreshToken: localDataAccess.getRefreshToken(),
+      refreshToken: await localDataAccess.getRefreshToken(),
+      serviceConfiguration: const AuthorizationServiceConfiguration(
+        authorizationEndpoint: '${SSOConfig.issuer}/connect/authorize',
+        tokenEndpoint: '${SSOConfig.issuer}/connect/token',
+        endSessionEndpoint: '${SSOConfig.issuer}/connect/endsession',
+      ),
     );
     try {
       final TokenResponse? tokenResponse = await appAuth.token(tokenRequest);
+      log(' refresh token response: ${tokenResponse?.accessToken}');
+      log(' refresh token response: ${tokenResponse?.refreshToken}');
       if (tokenResponse?.accessToken == null) {
         return ResponseWrapper.error(message: '');
       }
-      localDataAccess.setAccessToken(tokenResponse?.accessToken ?? '');
-      localDataAccess.setRefreshToken(tokenResponse?.refreshToken ?? '');
+      await localDataAccess.setIdToken(tokenResponse?.idToken ?? '');
+      await localDataAccess.setAccessToken(tokenResponse?.accessToken ?? '');
+      await localDataAccess.setRefreshToken(tokenResponse?.refreshToken ?? '');
       return ResponseWrapper.success(data: true);
     } catch (e) {
       return ResponseWrapper.error(message: '');
@@ -97,11 +109,12 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
   @override
   Future<ResponseWrapper<UserSSO>> getUserInfo() async {
     try {
-      final String accessToken = localDataAccess.getAccessToken();
+      final String accessToken = await localDataAccess.getAccessToken();
       final response = await dio.get(EndPoints.getUserInfoSSO,
           options: Options(
             headers: {'Authorization': 'Bearer $accessToken'},
           ));
+
       return ResponseWrapper.success(data: UserSSO.fromJson(response.data));
       // if(response.statusCode == 200){
       // }
@@ -109,6 +122,45 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
     } catch (e) {
       handleException(e);
       return ResponseWrapper.error(message: e.toString());
+    }
+  }
+
+  @override
+  Future<ResponseWrapper<bool>> endSession() async {
+    try {
+      final response = await appAuth.endSession(
+        EndSessionRequest(
+          idTokenHint: await localDataAccess.getIdToken(),
+          issuer: SSOConfig.issuer,
+          postLogoutRedirectUrl: SSOConfig.redirectUrl,
+          allowInsecureConnections: true,
+          serviceConfiguration: const AuthorizationServiceConfiguration(
+            authorizationEndpoint: '${SSOConfig.issuer}/connect/authorize',
+            tokenEndpoint: '${SSOConfig.issuer}/connect/token',
+            endSessionEndpoint: '${SSOConfig.issuer}/connect/endsession',
+          ),
+        ),
+      );
+      return ResponseWrapper.success(data: true);
+    } catch (err) {
+      return ResponseWrapper.success(data: true);
+    }
+  }
+
+  @override
+  Future<ResponseWrapper<bool>> requestDeactive(
+      {required bool isDeactive}) async {
+    try {
+      final response = await dio.get(EndPoints.deactiveUser, queryParameters: {
+        'username': localDataAccess.getUserName(),
+      });
+      if (response.statusCode == 200) {
+        return ResponseWrapper.success(data: true);
+      }
+      return ResponseWrapper.error(data: false, message: '');
+    } catch (err) {
+      log('$err 🍍');
+      return ResponseWrapper.error(data: false, message: '');
     }
   }
 }

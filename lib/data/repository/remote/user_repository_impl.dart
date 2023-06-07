@@ -131,7 +131,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Response> getInformation() async {
-    final String accessToken = localDataAccess.getAccessToken();
+    final String accessToken = await localDataAccess.getAccessToken();
     final response = await dio.get('/api/getInformation',
         options: Options(
           headers: {'Authorization': 'Bearer $accessToken'},
@@ -142,7 +142,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Response> changePassword(
       {required String currentPassword, required String newPassword}) async {
-    final String accessToken = localDataAccess.getAccessToken();
+    final String accessToken = await localDataAccess.getAccessToken();
     final response = await dio.post(EndPoints.changePassword,
         data: {
           "currentPassword": currentPassword,

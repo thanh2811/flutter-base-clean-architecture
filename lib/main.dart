@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'data/resources/colors.dart';
-import 'di/network_injection.dart';
+import 'di/di.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

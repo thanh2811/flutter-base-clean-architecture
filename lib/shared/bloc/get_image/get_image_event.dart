@@ -9,11 +9,27 @@ class AddImageEvent extends GetImageEvent {
   AddImageEvent({required this.image, required this.imgType});
 }
 
+class GetImageInitialEvent extends GetImageEvent {
+  final List<ImageDataWrapper> initialData;
+  final int? maxQuantity;
+  final bool isAdd;
+
+  GetImageInitialEvent(
+      {required this.isAdd, required this.initialData, this.maxQuantity = 5});
+}
+
 class RemoveImageEvent extends GetImageEvent {
   final int index;
   final int imgType;
 
   RemoveImageEvent({required this.index, required this.imgType});
+}
+
+class GetImageReorderEvent extends GetImageEvent {
+  final int oldIndex;
+  final int newIndex;
+
+  GetImageReorderEvent({required this.oldIndex, required this.newIndex});
 }
 
 class GetImageRemoveSingleImageEvent extends GetImageEvent {
@@ -34,17 +50,25 @@ class GetImagePickerEvent extends GetImageEvent {
   });
 }
 
+class GetImageMultiPickerEvent extends GetImageEvent {
+  final int? maxQuantity;
+
+  GetImageMultiPickerEvent({this.maxQuantity = 99999999});
+}
+
 class GetImageUploadImageEvent extends GetImageEvent {}
 
-class GetImageGetImageUrlEvent extends GetImageEvent {
-  final String imagePath;
-  final ImageType imageType;
+class GetImageGetSingleImageUrlEvent extends GetImageEvent {
+  // final String imagePath;
+  // final ImageType imageType;
 
-  GetImageGetImageUrlEvent({
-    required this.imagePath,
-    required this.imageType,
-  });
+  GetImageGetSingleImageUrlEvent(
+      // required this.imagePath,
+      // required this.imageType,
+      );
 }
+
+class GetImageGetMultiImageUrlEvent extends GetImageEvent {}
 
 class ChangeImageTypeEvent extends GetImageEvent {
   final int imgType;

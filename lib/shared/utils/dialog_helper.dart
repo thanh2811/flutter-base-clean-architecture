@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../data/constant/enum.dart';
 import '../../data/model/public_api/location.dart';
 import '../../data/resources/resources.dart';
+import '../../main.dart';
 import '../widgets/button/primary_button.dart';
 import '../widgets/something/loading.dart';
 import '../widgets/text_field/primary_search_text_field.dart';
@@ -254,4 +256,24 @@ Dialog getAlertDialog({
       ),
     ),
   );
+}
+
+void showGlobalDialog(
+    {required String message,
+    DialogType dialogType = DialogType.alert,
+    Function(dynamic value)? callbackWhenDismiss}) async {
+  switch (dialogType) {
+    case DialogType.alert:
+      await showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) => getErrorDialog(
+          context: context,
+          message: message,
+        ),
+      ).then((value) =>
+          callbackWhenDismiss != null ? callbackWhenDismiss(value) : null);
+      break;
+    case DialogType.datePicker:
+      break;
+  }
 }

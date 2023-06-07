@@ -17,14 +17,28 @@ class GetImagePickImageSuccessState extends GetImageState {
   // List<Object?> get props => [imagePath, type];
 }
 
+class GetImageSuccessState extends GetImageState {
+  final List<ImageDataWrapper> imageData;
+
+  GetImageSuccessState({required this.imageData});
+}
+
 class GetImageRemoveSingleImageSuccessState extends GetImageState {}
 
-class GetImageGetImageUrlSuccessState extends GetImageState {
+class GetImageGetSingleImageUrlSuccessState extends GetImageState {
   final String imageUrl;
   final ImageType type;
 
-  GetImageGetImageUrlSuccessState(
+  GetImageGetSingleImageUrlSuccessState(
       {required this.imageUrl, this.type = ImageType.none});
 }
 
-class GetImageGetImageUrlErrorState extends GetImageState {}
+class GetImageGetSingleImageUrlErrorState extends GetImageState {}
+
+class GetImageGetMultiImageUrlSuccessState extends GetImageState {
+  final List<ImageDataWrapper> imageData;
+
+  GetImageGetMultiImageUrlSuccessState({required this.imageData});
+}
+
+class GetImageGetMultiImageUrlErrorState extends GetImageState {}

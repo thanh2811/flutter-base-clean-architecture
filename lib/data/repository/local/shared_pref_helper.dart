@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/constants.dart';
@@ -5,6 +6,7 @@ import 'local_data_access.dart';
 
 class SharePrefHelper implements LocalDataAccess {
   final SharedPreferences sharedPref;
+  late final secureStorage = const FlutterSecureStorage();
 
   SharePrefHelper({required this.sharedPref});
 
@@ -19,8 +21,13 @@ class SharePrefHelper implements LocalDataAccess {
   }
 
   @override
-  String getAccessToken() {
-    return sharedPref.getString(SharedPreferenceKey.idToken) ?? '';
+  Future<String> getIdToken() async {
+    return await secureStorage.read(key: SharedPreferenceKey.idToken) ?? '';
+  }
+
+  @override
+  Future<String> getAccessToken() async {
+    return await secureStorage.read(key: SharedPreferenceKey.accessToken) ?? '';
   }
 
   @override
@@ -29,8 +36,9 @@ class SharePrefHelper implements LocalDataAccess {
   }
 
   @override
-  void clearData() {
-    sharedPref.remove(SharedPreferenceKey.idToken);
+  Future<void> clearData() async {
+    await secureStorage.delete(key: SharedPreferenceKey.idToken);
+    await secureStorage.delete(key: SharedPreferenceKey.refreshToken);
     sharedPref.remove(SharedPreferenceKey.username);
     sharedPref.remove(SharedPreferenceKey.password);
     sharedPref.remove(SharedPreferenceKey.rememberMe);
@@ -50,8 +58,14 @@ class SharePrefHelper implements LocalDataAccess {
       sharedPref.getString(SharedPreferenceKey.username) ?? '';
 
   @override
-  void setAccessToken(String accessToken) {
-    sharedPref.setString(SharedPreferenceKey.idToken, accessToken);
+  Future setAccessToken(String accessToken) async {
+    await secureStorage.write(
+        key: SharedPreferenceKey.accessToken, value: accessToken);
+  }
+
+  @override
+  Future setIdToken(String idToken) async {
+    await secureStorage.write(key: SharedPreferenceKey.idToken, value: idToken);
   }
 
   @override
@@ -75,10 +89,10 @@ class SharePrefHelper implements LocalDataAccess {
   }
 
   @override
-  String getRefreshToken() =>
-      sharedPref.getString(SharedPreferenceKey.refreshToken) ?? '';
+  Future<String> getRefreshToken() async =>
+      await secureStorage.read(key: SharedPreferenceKey.refreshToken) ?? '';
 
   @override
-  void setRefreshToken(String refreshToken) =>
-      sharedPref.setString(SharedPreferenceKey.refreshToken, refreshToken);
+  Future setRefreshToken(String refreshToken) async => await secureStorage
+      .write(key: SharedPreferenceKey.refreshToken, value: refreshToken);
 }

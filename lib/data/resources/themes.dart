@@ -1,3 +1,4 @@
+import 'package:base_project/config/config.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -8,13 +9,12 @@ class AppTextTheme {
     // overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.w600,
     fontSize: 18,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textPrimary = TextStyle(
     color: AppColor.black,
-    fontWeight: FontWeight.w500,
-    fontSize: 15,
+    fontWeight: AppConfig.defaultFontWeight,
+    fontSize: AppConfig.primaryFontSize,
   );
 
   static const TextStyle textPrimaryBlue = TextStyle(
@@ -41,14 +41,12 @@ class AppTextTheme {
     fontWeight: FontWeight.w600,
     fontSize: 16,
     overflow: TextOverflow.ellipsis,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textStyleSubTitle = TextStyle(
     color: AppColor.divColor,
     fontSize: 16,
     // overflow: TextOverflow.ellipsis,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textStyle14400Grey = TextStyle(
@@ -56,7 +54,6 @@ class AppTextTheme {
     fontWeight: FontWeight.w400,
     fontSize: 14,
     // overflow: TextOverflow.ellipsis,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textPrimaryLarge = TextStyle(
@@ -65,56 +62,28 @@ class AppTextTheme {
     fontSize: 18,
   );
 
-  // static const TextStyle textPrimaryWhite = TextStyle(
-  //   color: AppColor.bgColor,
-  //   fontWeight: FontWeight.w500,
-  //   fontSize: 32,
-  //   overflow: TextOverflow.ellipsis,
-  // );
-
-  //
-  // static const TextStyle textStyle16600 = TextStyle(
-  //   color: AppColor.black,
-  //   fontWeight: FontWeight.w600,
-  //   fontSize: 16,
-  //   overflow: TextOverflow.ellipsis,
-  //   fontFamily: "Lato",
-  // );
-  //
-  // static const TextStyle textStyle14400Grey = TextStyle(
-  //   color: AppColor.gray,
-  //   fontWeight: FontWeight.w400,
-  //   fontSize: 14,
-  //   overflow: TextOverflow.ellipsis,
-  //   fontFamily: "Lato",
-  // );
-
   static TextStyle textPrimarySmall = const TextStyle(
     color: AppColor.black,
     fontWeight: FontWeight.w500,
     fontSize: 12,
-    fontFamily: "Lato",
   );
 
   static TextStyle textPrimarySmallGreen = const TextStyle(
     color: AppColor.green,
     fontWeight: FontWeight.w500,
     fontSize: 12,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textPrimaryWhite = TextStyle(
     color: AppColor.white,
     fontWeight: FontWeight.w500,
     fontSize: 15,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textPrimaryGreen = TextStyle(
     color: AppColor.green,
     fontWeight: FontWeight.w500,
     fontSize: 14,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textPrimaryGreenItalic = TextStyle(
@@ -122,7 +91,6 @@ class AppTextTheme {
     fontWeight: FontWeight.w500,
     fontSize: 14,
     fontStyle: FontStyle.italic,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textAppBarPrimary = TextStyle(
@@ -130,7 +98,6 @@ class AppTextTheme {
     overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.w700,
     fontSize: 17,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textLowPriority = TextStyle(
@@ -138,7 +105,6 @@ class AppTextTheme {
     overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.w500,
     fontSize: 14,
-    fontFamily: "Lato",
   );
 
   static const TextStyle textHintPrimary = TextStyle(
@@ -152,7 +118,6 @@ class AppTextTheme {
     color: AppColor.btPrimary,
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    fontFamily: "Lato",
     // overflow: TextOverflow.ellipsis,
   );
   static const TextStyle textRed = TextStyle(
@@ -160,6 +125,5 @@ class AppTextTheme {
     // overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.w400,
     fontSize: 16,
-    fontFamily: "Lato",
   );
 }

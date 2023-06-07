@@ -1,10 +1,10 @@
+import 'package:base_project/shared/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../data/constant/enum.dart';
 import '../../../data/resources/colors.dart';
 import '../../../data/resources/themes.dart';
-import '../../utils/utils.dart';
 
 class SecondaryTextField extends StatefulWidget {
   const SecondaryTextField({
@@ -158,8 +158,8 @@ class _SecondaryTextFieldState extends State<SecondaryTextField> {
                             lastDate: DateTime(2100));
                         if (selectedDate != null) {
                           setState(() {
-                            widget.controller.text =
-                                Utils.formatDate(selectedDate.toString());
+                            widget.controller.text = DateTimeUtils.formatDate(
+                                selectedDate.toString());
                           });
                         }
                       },

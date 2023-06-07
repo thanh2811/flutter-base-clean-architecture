@@ -3,13 +3,17 @@ abstract class LocalDataAccess {
 
   void clearRefreshToken();
 
-  String getAccessToken();
+  Future<String> getIdToken();
 
-  void setAccessToken(String accessToken);
+  Future setIdToken(String idToken);
 
-  String getRefreshToken();
+  Future<String> getAccessToken();
 
-  void setRefreshToken(String accessToken);
+  Future setAccessToken(String accessToken);
+
+  Future<String> getRefreshToken();
+
+  Future setRefreshToken(String accessToken);
 
   String getUserId();
 
@@ -27,5 +31,5 @@ abstract class LocalDataAccess {
 
   void setAccountRemember(bool accountRemember);
 
-  void clearData();
+  Future<void> clearData();
 }

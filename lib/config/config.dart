@@ -16,6 +16,7 @@ class Environment {
 class EndPoints {
   // sso related
   static const String getUserInfoSSO = '/user/updateinfo';
+  static const String deactiveUser = '/user/de-active';
 
   // static const String baseDomain = "https://dms.fitolabs.vn";
   // static const String idBaseUrl = "https://id.fitolabs.vn";
@@ -66,4 +67,8 @@ class AppConfig {
   static const String fontFamily = "Lato";
   static const Color primaryColor = AppColor.primaryColor;
   static const MaterialColor primarySwatch = AppColor.primarySwatch;
+  static const double primaryFontSize = 14;
+  static const FontWeight defaultFontWeight = FontWeight.w400;
+  static const double defaultPadding = 16;
+  static const double defaultRadius = 8;
 }

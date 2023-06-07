@@ -32,7 +32,7 @@ class StorageRepositoryImpl implements StorageRepository {
   @override
   Future<ResponseWrapper<String>> uploadImage(
       {required String imagePath, ImageType imageType = ImageType.none}) async {
-    final String accessToken = localDataAccess.getAccessToken();
+    final String accessToken = await localDataAccess.getAccessToken();
     String imageTypeStr = '';
     switch (imageType) {
       case ImageType.none:
@@ -74,7 +74,7 @@ class StorageRepositoryImpl implements StorageRepository {
   @override
   Future<ResponseWrapper<List<String>>> uploadMultipleImage(
       {required List<String> imagePathList}) async {
-    final String accessToken = localDataAccess.getAccessToken();
+    final String accessToken = await localDataAccess.getAccessToken();
 
     var formData = FormData();
     for (String path in imagePathList) {
