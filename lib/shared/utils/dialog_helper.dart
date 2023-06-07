@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../data/constant/enum.dart';
 import '../../data/model/public_api/location.dart';
@@ -170,10 +171,9 @@ Dialog getErrorDialog({
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.error,
-                  size: 40,
-                  color: AppColor.errorColor,
+                SvgPicture.asset(
+                  Assets.iconAppError,
+                  height: 100,
                 ),
                 const SizedBox(
                   height: 15,

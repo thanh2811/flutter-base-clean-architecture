@@ -59,7 +59,7 @@ class UserRepositoryImpl implements UserRepository {
       }
     } on Exception catch (e) {
       handleException(e);
-      return ResponseWrapper.error(message: 'message');
+      return ResponseWrapper.error(message: e.toString());
     }
   }
 

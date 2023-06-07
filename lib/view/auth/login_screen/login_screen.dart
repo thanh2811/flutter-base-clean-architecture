@@ -1,274 +1,260 @@
 // ignore_for_file: use_build_context_synchronously, empty_catches
+
+import 'package:animated_widgets/animated_widgets.dart';
+import 'package:base_project/config/config.dart';
 import 'package:base_project/config/routes.dart';
+import 'package:base_project/data/resources/resources.dart';
+import 'package:base_project/shared/etx/app_ext.dart';
+import 'package:base_project/shared/utils/validation_utils.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/resources/colors.dart';
 import '../../../shared/bloc/auth/auth_bloc.dart';
 import '../../../shared/utils/dialog_helper.dart';
 import '../../../shared/utils/view_utils.dart';
 import '../../../shared/widgets/button/primary_button.dart';
+import '../../../shared/widgets/text_field/primary_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  late BuildContext dialogContext;
-
-  late AuthBloc _authBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _authBloc = AuthBloc()..add(AuthInitEvent());
-  }
+// ignore: must_be_immutable
+class LoginScreen extends StatelessWidget {
+  LoginScreen({Key? key}) : super(key: key);
+  final AuthBloc authBloc = AuthBloc()..add(AuthInitEvent());
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final usernameFormKey = GlobalKey<FormState>();
+  final passwordFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    onLoginPressed() {
+      context.showAppDialog(getLoadingDialog());
+
+      final c1 = usernameFormKey.currentState?.validate() ?? false;
+      final c2 = passwordFormKey.currentState?.validate() ?? false;
+      if (!c1 || !c2) {
+        context.pop();
+        return;
+      }
+      authBloc.add(AuthLoginRequestEvent(
+        username: usernameController.text.trim(),
+        password: passwordController.text.trim(),
+      ));
+    }
+
     return BlocProvider<AuthBloc>(
-      create: (context) => _authBloc,
+      create: (context) => authBloc,
+      lazy: false,
       child: Scaffold(
         backgroundColor: AppColor.primaryBackgroundColor,
         body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child:
-                // listen state
-                Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  color: AppColor.primaryBackgroundColor,
-                  height: 90,
-                  margin: const EdgeInsets.only(top: 70),
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.asset('assets/images/eztek_logo_org.png'),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthFieldRequiredState) {
-                      ViewUtils.toastWarning(
-                          'Tên đăng nhập và mật khẩu không được bỏ trống');
-                    }
-                    if (state is AuthLoadingState) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => getLoadingDialog(),
-                        barrierDismissible: false,
-                      );
-                    }
-                    if (state is AuthLoginSuccessState) {
-                      WidgetsBinding.instance
-                          .addPostFrameCallback(((timeStamp) {
-                        Navigator.of(context, rootNavigator: true).pop();
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoute.home,
-                          //HomeScreen
-                          (route) => false,
-                        );
-                      }));
-                    }
-                    if (state is AuthLoginFailedState) {
-                      Navigator.of(context, rootNavigator: true).pop();
-                      ViewUtils.toastWarning(state.message!);
-                    }
-                    if (state is AuthGetLocalInfoState) {
-                      usernameController.text = state.username;
-                      passwordController.text = state.password;
-                    }
-                  },
-                  child: const SizedBox(
-                    height: 0,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppConfig.defaultPadding,
+              ),
+              margin: const EdgeInsets.only(top: 50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TranslationAnimatedWidget(
+                    enabled: true,
+                    duration: const Duration(milliseconds: 1000),
+                    values: const [
+                      Offset(0, -100), // disabled value value
+                      Offset(0, 0), //intermediate value
+                      Offset(0, 0) //enabled value
+                    ],
+                    curve: Curves.slowMiddle,
+                    child: OpacityAnimatedWidget.tween(
+                      opacityEnabled: 1,
+                      opacityDisabled: 0,
+                      duration: const Duration(milliseconds: 1200),
+                      child: Image.asset(
+                        Assets.imAppLogo,
+                      ),
+                    ),
                   ),
-                ),
-                // const Text(
-                //   'Đăng nhập',
-                //   style: TextStyle(
-                //       color: AppColor.titleColor,
-                //       fontSize: 30,
-                //       fontWeight: FontWeight.w700),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                // const Text('Email', style: AppTextTheme.textPageTitle),
-                // const SizedBox(
-                //   height: 8,
-                // ),
-                // SecondaryTextField(
-                //   controller: usernameController,
-                //   textInputAction: TextInputAction.next,
-                //   fillColor: Colors.transparent,
-                //   maxLength: 100,
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                // const Text('Mật khẩu', style: AppTextTheme.textPageTitle),
-                // const SizedBox(
-                //   height: 8,
-                // ),
-                // BlocBuilder<AuthBloc, AuthState>(
-                //   buildWhen: (pre, current) =>
-                //       current is AuthShowPasswordState,
-                //   builder: (context, state) {
-                //     return SecondaryTextField(
-                //       controller: passwordController,
-                //       textInputAction: TextInputAction.done,
-                //       fillColor: Colors.transparent,
-                //       maxLength: 100,
-                //       obscureText: _obscureText,
-                //       suffixIcon: IconButton(
-                //         onPressed: () {
-                //           _obscureText = !_obscureText;
-                //           _authBloc.add(
-                //             AuthShowPasswordEvent(
-                //                 showPassword: _obscureText),
-                //           );
-                //         },
-                //         icon: Icon(
-                //           _obscureText
-                //               ? Icons.visibility
-                //               : Icons.visibility_off,
-                //           color: AppColor.black,
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 8,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     // Container(
-                //     //   margin: const EdgeInsets.all(3),
-                //     //   decoration: BoxDecoration(
-                //     //       border: Border.all(width: 3, color: Colors.white)),
-                //     //   width: 20,
-                //     //   height: 20,
-                //     //   child: Checkbox(
-                //     //     checkColor: Colors.white,
-                //     //     activeColor: AppColor.primaryColor,
-                //     //     value: _rememberMe,
-                //     //     onChanged: (bool? value) {
-                //     //       _rememberMe = value!;
-                //     //       _authBloc.add(AuthRememberEvent(_rememberMe));
-                //     //     },
-                //     //   ),
-                //     // ),
-                //     // GestureDetector(
-                //     //   onTap: () {
-                //     //     _rememberMe = !_rememberMe;
-                //     //     _authBloc.add(AuthRememberEvent(_rememberMe));
-                //     //   },
-                //     //   child: const Text(
-                //     //     'Nhớ tài khoản',
-                //     //     style: TextStyle(
-                //     //         color: AppColor.primaryColor, fontSize: 16),
-                //     //   ),
-                //     // ),
-                //     Expanded(
-                //       child: BlocBuilder<AuthBloc, AuthState>(
-                //         buildWhen: (pre, current) =>
-                //             current is AuthRememberState,
-                //         builder: (context, state) {
-                //           return CheckboxListTile(
-                //               controlAffinity:
-                //                   ListTileControlAffinity.leading,
-                //               dense: false,
-                //               value: _rememberMe,
-                //               onChanged: (value) {
-                //                 _rememberMe = !_rememberMe;
-                //                 _authBloc
-                //                     .add(AuthRememberEvent(_rememberMe));
-                //               },
-                //               contentPadding: EdgeInsets.zero,
-                //               selectedTileColor: Colors.red,
-                //               title: const Text(
-                //                 'Nhớ tài khoản',
-                //                 style: AppTextTheme.textPrimary,
-                //               ));
-                //         },
-                //       ),
-                //     ),
-                //
-                //     Align(
-                //       alignment: Alignment.centerRight,
-                //       child: RichText(
-                //         text: TextSpan(
-                //           text: 'Quên mật khẩu?',
-                //           style: AppTextTheme.textPrimaryBlue,
-                //           recognizer: TapGestureRecognizer()
-                //             ..onTap = () {
-                //               // Navigator.push(
-                //               //     context,
-                //               //     MaterialPageRoute(
-                //               //         builder: (context) =>
-                //               //             ForgotPassword()));
-                //             },
-                //         ),
-                //       ),
-                //     ),
-                //
-                //   ],
-                // ),
-                // const SizedBox(
-                //   height: 30,
-                // ),
-                // PrimaryButton(
-                //     context: context,
-                //     onPressed: () {
-                //       _authBloc.add(AuthRequestEvent(
-                //           username: usernameController.text,
-                //           password: passwordController.text,
-                //           rememberMe: _rememberMe));
-                //     },
-                //     label: "Đăng Nhập"),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                BlocBuilder<AuthBloc, AuthState>(
-                  buildWhen: (pre, current) =>
-                      current is AuthLoginBySSOLoadingState ||
-                      current is AuthLoginBySSOSuccessState ||
-                      current is AuthLoginBySSOErrorState,
-                  builder: (context, state) {
-                    if (state is AuthLoginBySSOLoadingState) {
-                      return PrimaryButton(
-                          context: context,
-                          isLoading: true,
-                          // backgroundColor: AppColor.secondaryColor,
-                          onPressed: () => null,
-                          label: '');
-                    } else {
-                      return PrimaryButton(
-                          context: context,
-                          // backgroundColor: AppColor.secondaryColor,
-                          onPressed: () {
-                            _authBloc.add(AuthLoginBySSORequestEvent());
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthFieldRequiredState) {
+                        ViewUtils.toastWarning(
+                            'Tên đăng nhập và mật khẩu không được bỏ trống');
+                      }
+                      if (state is AuthLoadingState) {}
+                      if (state is AuthLoginSuccessState) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback(((timeStamp) {
+                          context.pop();
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AppRoute.home,
+                            (route) => false,
+                          );
+                        }));
+                      }
+                      if (state is AuthLoginFailedState) {
+                        context.pop();
+                        // context.pop();
+                        // ViewUtils.toastWarning(state.message!);
+                      }
+                      if (state is AuthGetLocalInfoState) {
+                        usernameController.text = state.username;
+                        passwordController.text = state.password;
+                      }
+                    },
+                    child: const SizedBox(
+                      height: 0,
+                    ),
+                  ),
+                  const Text(
+                    'Đăng nhập',
+                    style: AppTextTheme.textPageTitle,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  PrimaryTextField(
+                    label: 'Email',
+                    labelStyle: AppTextTheme.textPrimaryBoldMedium,
+                    controller: usernameController,
+                    textInputAction: TextInputAction.next,
+                    maxLength: 100,
+                    formKey: usernameFormKey,
+                    validator: ValidationUtils.textEmptyValidator,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    buildWhen: (pre, current) =>
+                        current is AuthShowPasswordState,
+                    builder: (context, state) {
+                      if (state is AuthShowPasswordState) {
+                        return PrimaryTextField(
+                          label: 'Mật khẩu',
+                          labelStyle: AppTextTheme.textPrimaryBoldMedium,
+                          controller: passwordController,
+                          textInputAction: TextInputAction.done,
+                          maxLength: 100,
+                          maxLines: 1,
+                          obscureText: !state.showPassword,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              authBloc.add(
+                                AuthShowPasswordEvent(
+                                    showPassword: !state.showPassword),
+                              );
+                            },
+                            icon: Icon(
+                              state.showPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: AppColor.black,
+                            ),
+                          ),
+                          formKey: passwordFormKey,
+                          validator: ValidationUtils.textEmptyValidator,
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: BlocBuilder<AuthBloc, AuthState>(
+                          buildWhen: (pre, current) =>
+                              current is AuthRememberState,
+                          builder: (context, state) {
+                            if (state is AuthRememberState) {
+                              return CheckboxListTile(
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  dense: false,
+                                  value: state.remember,
+                                  onChanged: (value) {
+                                    authBloc.add(
+                                        AuthRememberEvent(!state.remember));
+                                  },
+                                  contentPadding: EdgeInsets.zero,
+                                  selectedTileColor: Colors.red,
+                                  title: const Text(
+                                    'Nhớ tài khoản',
+                                    style: AppTextTheme.textPrimary,
+                                  ));
+                            } else {
+                              return const SizedBox();
+                            }
                           },
-                          label: "Đăng Nhập Với True Connect");
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 45,
-                ),
-              ],
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'Quên mật khẩu?',
+                            style: AppTextTheme.textPrimaryBlue,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             ForgotPassword()));
+                              },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  PrimaryButton(
+                      context: context,
+                      onPressed: onLoginPressed,
+                      label: "Đăng Nhập"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    buildWhen: (pre, current) =>
+                        current is AuthLoginBySSOLoadingState ||
+                        current is AuthLoginBySSOSuccessState ||
+                        current is AuthLoginBySSOErrorState,
+                    builder: (context, state) {
+                      if (state is AuthLoginBySSOLoadingState) {
+                        return PrimaryButton(
+                            context: context,
+                            isLoading: true,
+                            onPressed: () => null,
+                            label: '');
+                      } else {
+                        return PrimaryButton(
+                          context: context,
+                          backgroundColor: AppColor.secondaryColor,
+                          onPressed: () {
+                            authBloc.add(AuthLoginBySSORequestEvent());
+                          },
+                          label: "Đăng Nhập Với True Connect",
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 45,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

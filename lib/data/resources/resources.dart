@@ -5,6 +5,7 @@ export 'themes.dart';
 class Assets {
   static const String iconPrefix = 'assets/icons';
   static const String icAdd = '$iconPrefix/ic_add.svg';
+  static const String iconAppError = '$iconPrefix/ic_app_error.svg';
   static const String icArrowRight = '$iconPrefix/ic_arrow_right.svg';
   static const String icCalendar = '$iconPrefix/ic_calendar.svg';
   static const String icCalendarShadow = '$iconPrefix/ic_calendar_shadow.svg';
@@ -38,4 +39,9 @@ class Assets {
   static const String icTask = '$iconPrefix/ic_task.svg';
   static const String icZalo = '$iconPrefix/ic_zalo.svg';
   static const String icZaloFill = '$iconPrefix/ic_zalo_fill.svg';
+
+  // image
+  static const String imagePrefix = 'assets/images';
+  static const String imSplash = '$imagePrefix/im_splash.png';
+  static const String imAppLogo = '$imagePrefix/im_splash.png';
 }

@@ -55,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         username: accountRemember ? username : '',
         password: accountRemember ? password : '',
         accountRemember: accountRemember));
+    emit(AuthShowPasswordState(showPassword: false));
     emit(AuthRememberState(accountRemember));
   }
 

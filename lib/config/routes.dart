@@ -11,10 +11,10 @@ class AppRoute {
   static const String register = "/register";
 
   static dynamic generateRoute() => {
-    AppRoute.login: (context) => const LoginScreen(),
-    AppRoute.home: (context) => const HomeScreen(),
-    AppRoute.splash: (context) => const SplashScreen(),
-  };
+        AppRoute.login: (context) => LoginScreen(),
+        AppRoute.home: (context) => const HomeScreen(),
+        AppRoute.splash: (context) => const SplashScreen(),
+      };
 
   static Route? onGenerateRoute(RouteSettings settings) {
     final List<String> pathElements = settings.name!.split('/');

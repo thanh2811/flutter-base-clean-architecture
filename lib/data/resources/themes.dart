@@ -17,10 +17,28 @@ class AppTextTheme {
     fontSize: AppConfig.primaryFontSize,
   );
 
+  static const TextStyle textPrimaryColor = TextStyle(
+    color: AppColor.primaryColor,
+    fontWeight: AppConfig.defaultFontWeight,
+    fontSize: AppConfig.primaryFontSize,
+  );
+
   static const TextStyle textPrimaryBlue = TextStyle(
     color: AppColor.blue,
     fontWeight: FontWeight.w500,
     fontSize: 15,
+  );
+
+  static const TextStyle textPrimaryMedium = TextStyle(
+    color: AppColor.black,
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
+  );
+
+  static const TextStyle textPrimaryBoldMedium = TextStyle(
+    color: AppColor.black,
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
   );
 
   static const TextStyle textTableLabel = TextStyle(

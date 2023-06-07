@@ -49,7 +49,7 @@ class AppInterceptor {
                       'Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại để tiếp tục sử dụng',
                   callbackWhenDismiss: (value) {
                     navigatorKey.currentState?.pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      MaterialPageRoute(builder: (_) => LoginScreen()),
                       (route) => false,
                     );
                   });

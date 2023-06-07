@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:base_project/config/routes.dart';
+import 'package:base_project/data/resources/resources.dart';
 import 'package:base_project/shared/bloc/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:upgrader/upgrader.dart';
 
 // ignore: must_be_immutable
@@ -34,7 +34,6 @@ class SplashScreen extends StatelessWidget {
                     context, AppRoute.home, (route) => false);
               });
             } else if (state is AuthSessionInvalidState) {
-              // (duration)
               Future.delayed(const Duration(seconds: 1), () {
                 // if app is not opened by appLinking
                 // if (appLinkUsernameReceived.isEmpty) {
@@ -48,11 +47,10 @@ class SplashScreen extends StatelessWidget {
             backgroundColor: Colors.white,
             body: SafeArea(
               child: Center(
-                child: Container(
+                child: SizedBox(
                   width: 200,
                   height: 200,
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: SvgPicture.asset('assets/icons/ic_logo_full.svg'),
+                  child: Image.asset(Assets.imSplash),
                 ),
               ),
             ),
