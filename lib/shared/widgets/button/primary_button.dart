@@ -1,10 +1,10 @@
+import 'package:base_project/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../data/resources/colors.dart';
 import '../../../data/resources/themes.dart';
 import '../something/bouncing.dart';
-import '../something/loading.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -20,7 +20,7 @@ class PrimaryButton extends StatelessWidget {
     this.isLoading = false,
     this.isClickable = true,
     this.isCircle = false,
-    this.contentPadding = 8,
+    this.contentPadding = 14,
   });
 
   final BuildContext context;
@@ -67,7 +67,8 @@ class PrimaryButton extends StatelessWidget {
                         : BorderSide.none,
                   )
                 : RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(2)),
+                    borderRadius: const BorderRadius.all(
+                        Radius.circular(AppConfig.defaultRadius)),
                     side: borderColor != null
                         ? BorderSide(color: borderColor!)
                         : BorderSide.none,
@@ -93,11 +94,7 @@ class PrimaryButton extends StatelessWidget {
                     ? const SizedBox(width: 5)
                     : Container(),
             isLoading
-                ? const Loading(
-                    backgroundColor: AppColor.transparent,
-                    spinnerColor: AppColor.white,
-                    spinnerSize: 22.5,
-                  )
+                ? const CircularProgressIndicator()
                 : Text(
                     label,
                     style: textStyle,

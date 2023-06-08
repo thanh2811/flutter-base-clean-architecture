@@ -9,6 +9,7 @@ import 'package:base_project/shared/utils/validation_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../shared/bloc/auth/auth_bloc.dart';
 import '../../../shared/utils/dialog_helper.dart';
@@ -112,18 +113,19 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const Text(
                     'Đăng nhập',
-                    style: AppTextTheme.textPageTitle,
+                    style: AppTextTheme.textGreeting,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   PrimaryTextField(
-                    label: 'Email',
+                    hintText: 'Tài khoản',
                     labelStyle: AppTextTheme.textPrimaryBoldMedium,
                     controller: usernameController,
                     textInputAction: TextInputAction.next,
                     maxLength: 100,
                     formKey: usernameFormKey,
+                    prefixIcon: Assets.icPerson,
                     validator: ValidationUtils.textEmptyValidator,
                   ),
                   const SizedBox(
@@ -135,12 +137,13 @@ class LoginScreen extends StatelessWidget {
                     builder: (context, state) {
                       if (state is AuthShowPasswordState) {
                         return PrimaryTextField(
-                          label: 'Mật khẩu',
+                          hintText: 'Mật khẩu',
                           labelStyle: AppTextTheme.textPrimaryBoldMedium,
                           controller: passwordController,
                           textInputAction: TextInputAction.done,
                           maxLength: 100,
                           maxLines: 1,
+                          prefixIcon: Assets.icLock,
                           obscureText: !state.showPassword,
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -149,10 +152,10 @@ class LoginScreen extends StatelessWidget {
                                     showPassword: !state.showPassword),
                               );
                             },
-                            icon: Icon(
+                            icon: SvgPicture.asset(
                               state.showPassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+                                  ? Assets.icEyeOff
+                                  : Assets.icEyeOn,
                               color: AppColor.black,
                             ),
                           ),
@@ -220,9 +223,10 @@ class LoginScreen extends StatelessWidget {
                     height: 30,
                   ),
                   PrimaryButton(
-                      context: context,
-                      onPressed: onLoginPressed,
-                      label: "Đăng Nhập"),
+                    context: context,
+                    onPressed: onLoginPressed,
+                    label: "Đăng Nhập",
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -236,6 +240,7 @@ class LoginScreen extends StatelessWidget {
                         return PrimaryButton(
                             context: context,
                             isLoading: true,
+                            backgroundColor: AppColor.secondaryColor,
                             onPressed: () => null,
                             label: '');
                       } else {
@@ -249,6 +254,27 @@ class LoginScreen extends StatelessWidget {
                         );
                       }
                     },
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: RichText(
+                        text: TextSpan(children: [
+                      const TextSpan(
+                        text: 'Chưa có tài khoản? ',
+                        style: AppTextTheme.textPrimaryBold,
+                      ),
+                      TextSpan(
+                          text: 'Đăng ký ngay',
+                          style: AppTextTheme.textPrimaryBold
+                              .copyWith(color: AppColor.primaryColor),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoute.register);
+                            }),
+                    ])),
                   ),
                   const SizedBox(
                     height: 45,

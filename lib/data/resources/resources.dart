@@ -17,10 +17,13 @@ class Assets {
   static const String icDownToBottom = '$iconPrefix/ic_down_to_bottom.svg';
   static const String icDownload = '$iconPrefix/ic_download.svg';
   static const String icEdit = '$iconPrefix/ic_edit.svg';
+  static const String icEyeOff = '$iconPrefix/ic_eye_off.svg';
+  static const String icEyeOn = '$iconPrefix/ic_eye_on.svg';
   static const String icExternalLink = '$iconPrefix/ic_external_link.svg';
   static const String icFilter = '$iconPrefix/ic_filter.svg';
   static const String icHome = '$iconPrefix/ic_home.svg';
   static const String icInterest = '$iconPrefix/ic_interest.svg';
+  static const String icLock = '$iconPrefix/ic_lock.svg';
   static const String icLogo = '$iconPrefix/ic_logo.svg';
   static const String icMessage = '$iconPrefix/ic_message.svg';
   static const String icNoData = '$iconPrefix/ic_no_data.svg';

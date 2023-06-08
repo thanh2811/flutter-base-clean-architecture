@@ -1,6 +1,7 @@
+import 'package:base_project/view/auth/register/register_page.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../view/auth/login_screen/login_screen.dart';
+import '../view/auth/login/login_page.dart';
 import '../view/home_screen/home_screen.dart';
 import '../view/splash_screen/splash_screen.dart';
 
@@ -14,6 +15,7 @@ class AppRoute {
         AppRoute.login: (context) => LoginScreen(),
         AppRoute.home: (context) => const HomeScreen(),
         AppRoute.splash: (context) => const SplashScreen(),
+        AppRoute.register: (context) => RegisterPage(),
       };
 
   static Route? onGenerateRoute(RouteSettings settings) {

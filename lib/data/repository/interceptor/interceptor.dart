@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../di/di.dart';
 import '../../../main.dart';
 import '../../../shared/utils/dialog_helper.dart';
-import '../../../view/auth/login_screen/login_screen.dart';
+import '../../../view/auth/login/login_page.dart';
 import '../../exceptions/handle_exception.dart';
 import '../../model/api/base_response.dart';
 import '../local/local_data_access.dart';

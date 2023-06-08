@@ -11,6 +11,12 @@ class AppTextTheme {
     fontSize: 18,
   );
 
+  static const TextStyle textGreeting = TextStyle(
+    color: AppColor.black,
+    fontWeight: FontWeight.w700,
+    fontSize: 36,
+  );
+
   static const TextStyle textPrimary = TextStyle(
     color: AppColor.black,
     fontWeight: AppConfig.defaultFontWeight,
@@ -134,7 +140,7 @@ class AppTextTheme {
 
   static const TextStyle textButtonPrimary = TextStyle(
     color: AppColor.btPrimary,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w700,
     fontSize: 14,
     // overflow: TextOverflow.ellipsis,
   );

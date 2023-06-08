@@ -12,6 +12,8 @@ class PrimaryAppBar extends StatefulWidget with PreferredSizeWidget {
   final bool centerTitle;
   final bool canPop;
   final VoidCallback? onBackPressed;
+  final Color? backgroundColor;
+  final double? elevation;
   final Function(String)? onChangeText;
   _PrimaryAppBarState? _primaryAppBarState;
 
@@ -23,7 +25,9 @@ class PrimaryAppBar extends StatefulWidget with PreferredSizeWidget {
       this.canPop = false,
       this.onBackPressed,
       this.onChangeText,
-      this.centerTitle = false}) {
+      this.centerTitle = false,
+      this.backgroundColor,
+      this.elevation}) {
     _primaryAppBarState = _PrimaryAppBarState(title: title);
   }
 
@@ -47,9 +51,9 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
   @override
   AppBar build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColor.primaryColor,
+      backgroundColor: widget.backgroundColor ?? AppColor.primaryColor,
       title: Text(title ?? '', style: AppTextTheme.textAppBarPrimary),
-      elevation: 2,
+      elevation: widget.elevation ?? 2,
       leading: widget.leading ??
           (widget.canPop
               ? BackButtonCustom(

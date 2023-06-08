@@ -191,7 +191,7 @@ class _PrimaryTextFieldState extends State<PrimaryTextField> {
                     counterText: widget.counterText,
                     isDense: widget.isDense,
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 10),
+                        horizontal: 12, vertical: 16),
                     hintText: widget.hintText,
                     hintStyle: AppTextTheme.textHintPrimary,
                     labelStyle: AppTextTheme.textPrimary,
@@ -207,8 +207,7 @@ class _PrimaryTextFieldState extends State<PrimaryTextField> {
                         borderRadius: const BorderRadius.all(
                             Radius.circular(AppConfig.defaultRadius))),
                     filled: true,
-                    fillColor: widget.fillColor ??
-                        AppColor.primaryColor.withOpacity(0.1),
+                    fillColor: widget.fillColor ?? AppColor.third11Color,
                     alignLabelWithHint: true,
                     prefixIcon: widget.prefixIcon == null
                         ? null
@@ -276,7 +275,7 @@ class _PrimaryTextFieldState extends State<PrimaryTextField> {
                           decoration: InputDecoration(
                             isDense: widget.isDense,
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
+                                horizontal: 12, vertical: 16),
                             hintText: widget.hintText,
                             labelStyle: AppTextTheme.textPrimary,
                             filled: true,
@@ -341,7 +340,7 @@ class _PrimaryTextFieldState extends State<PrimaryTextField> {
                               decoration: InputDecoration(
                                 isDense: widget.isDense,
                                 contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 5),
+                                    horizontal: 12, vertical: 16),
                                 hintText: widget.hintText,
                                 labelStyle: AppTextTheme.textPrimary,
                                 filled: true,

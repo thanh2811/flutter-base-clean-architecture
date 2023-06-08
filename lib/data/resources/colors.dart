@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color primaryColor = Color.fromARGB(255, 177, 2, 163);
+  static const Color primaryColor = Color.fromRGBO(220, 8, 20, 1);
   static const MaterialColor primarySwatch = Colors.teal;
   static const Color secondaryColor = Color.fromARGB(255, 250, 160, 24);
+  static const Color third11Color = Color(0xFFF7F7F7);
   static const Color transparent = Colors.transparent;
   static const Color labelColor = Color.fromARGB(255, 84, 211, 194);
   static const Color bgColor = Color.fromARGB(255, 255, 255, 255);
@@ -22,7 +23,8 @@ class AppColor {
   static const Color success = Color.fromARGB(217, 23, 131, 1);
 
   static const Color bgField = Color(0xFFF1F1F1);
-  static const Color primaryBackgroundColor = Color(0xFFF1F1F1);
+  static const Color primaryBackgroundColor =
+      Color.fromARGB(255, 255, 255, 255);
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
   static const Color gray = Color.fromARGB(255, 179, 179, 179);
