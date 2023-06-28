@@ -7,11 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../data/constant/enum.dart';
-import '../../../data/model/api/base_response.dart';
-import '../../../data/repository/remote/repository.dart';
-import '../../../di/di.dart';
-import '../../utils/view_utils.dart';
+import '../../../../data/constant/enum.dart';
+import '../../../../data/model/api/base_response.dart';
+import '../../../../data/repository/remote/repository.dart';
+import '../../../../di/di.dart';
+import '../../../../shared/utils/view_utils.dart';
 
 part 'get_image_event.dart';
 
@@ -130,10 +130,12 @@ class GetImageBloc extends Bloc<GetImageEvent, GetImageState> {
         await storageRepository.uploadImage(imagePath: singleImagePath);
     if (imgResponse.status == ResponseStatus.success) {
       emit(
-        GetImageGetSingleImageUrlSuccessState(imageUrl: imgResponse.data ?? ''),
+        GetImageGetSingleImageUrlSuccessState(
+            imageUrl: imgResponse.data ?? '', type: event.imageType),
       );
+      ViewUtils.toastSuccess('Tải ảnh lên thành công');
     } else {
-      ViewUtils.toastSuccess('Tải ảnh lên không thành công');
+      ViewUtils.toastWarning('Tải ảnh lên không thành công');
       emit(GetImageGetSingleImageUrlErrorState());
     }
   }

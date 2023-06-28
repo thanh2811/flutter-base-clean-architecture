@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/model/api/base_response.dart';
-import '../../../data/model/public_api/location.dart';
-import '../../../data/repository/remote/utility_repository.dart';
+import '../../../../data/model/api/base_response.dart';
+import '../../../../data/model/public_api/location.dart';
+import '../../../../data/repository/remote/utility_repository.dart';
 
 part 'address_event.dart';
 
@@ -31,7 +31,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
 
   FutureOr<void> _onGetProvince(
       AddressGetProvinceListEvent event, Emitter<AddressState> emit) async {
-
     log('get address: ${event.initialProvince}');
     final response = await utilityRepository.getProvincesList();
     if (response.status == ResponseStatus.success) {
@@ -39,16 +38,15 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       _provinceList.addAll(response.data as List<Province>);
 
       // get current address information
-      if((event.initialProvince ?? '').isNotEmpty && _provinceList.isNotEmpty){
+      if ((event.initialProvince ?? '').isNotEmpty &&
+          _provinceList.isNotEmpty) {
         try {
           _currentProvinceSelectedId = _provinceList
-              .where((element) =>
-          element.name ==
-              event.initialProvince)
+              .where((element) => element.name == event.initialProvince)
               .first
               .code!;
 
-          if(_currentProvinceSelectedId != -1){
+          if (_currentProvinceSelectedId != -1) {
             // get district
             final response = await utilityRepository.getDistrictsList(
                 code: _currentProvinceSelectedId);
@@ -57,9 +55,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
               _districtList.addAll(response.data as List<District>);
               try {
                 _currentDistrictSelectedId = _districtList
-                    .where((element) =>
-                element.name ==
-                    event.initialDistrict)
+                    .where((element) => element.name == event.initialDistrict)
                     .first
                     .code!;
               } catch (e) {
@@ -68,7 +64,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             }
 
             // get ward
-            if(_currentDistrictSelectedId != -1){
+            if (_currentDistrictSelectedId != -1) {
               final response = await utilityRepository.getCommunesList(
                 provinceCode: _currentProvinceSelectedId,
                 districtId: _currentDistrictSelectedId,
@@ -79,9 +75,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
                 // emit something to notify ui that data is loaded
               }
             }
-
           }
-
 
           // newCustomerBloc.add(GetDistrictListEvent(
           //     provinceId: _currentProvinceSelectedId));

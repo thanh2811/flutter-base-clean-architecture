@@ -1,4 +1,4 @@
-import 'package:base_project/data/repository/local/local_data_access.dart';
+import '../data/repository/local/local_data_access.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';

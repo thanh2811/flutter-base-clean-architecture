@@ -1,12 +1,12 @@
-import 'package:base_project/config/config.dart';
-import 'package:base_project/config/routes.dart';
-import 'package:base_project/shared/utils/view_utils.dart';
+import 'config/config.dart';
+import 'config/routes.dart';
+import 'data/resources/resources.dart';
+import 'shared/utils/view_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'data/resources/colors.dart';
 import 'di/di.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -41,18 +41,20 @@ class MyApp extends StatelessWidget {
         title: AppConfig.appName,
         themeMode: ThemeMode.light,
         theme: ThemeData(
-            pageTransitionsTheme: const PageTransitionsTheme(builders: {
-              TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            }),
-            colorScheme: ColorScheme.fromSwatch().copyWith(
-                primary: AppColor.primaryColor,
-                secondary: AppColor.secondaryColor,
-                background: AppColor.primaryBackgroundColor),
-            primarySwatch: AppConfig.primarySwatch,
-            canvasColor: Colors.grey,
-            fontFamily: AppConfig.fontFamily,
-            primaryColor: AppConfig.primaryColor),
+          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          }),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: AppColor.primaryColor,
+              secondary: AppColor.secondaryColor,
+              background: AppColor.primaryBackgroundColor),
+          primarySwatch: AppConfig.primarySwatch,
+          canvasColor: Colors.grey,
+          fontFamily: AppConfig.fontFamily,
+          primaryColor: AppConfig.primaryColor,
+          textTheme: const TextTheme(bodyMedium: AppTextTheme.textPrimary),
+        ),
       ),
     );
   }

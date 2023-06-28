@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:base_project/data/repository/interceptor/dio_base_options.dart';
+import '../interceptor/dio_base_options.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 

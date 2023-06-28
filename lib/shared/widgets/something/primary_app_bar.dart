@@ -5,7 +5,7 @@ import '../../../data/resources/themes.dart';
 import '../button/back_button.dart';
 
 // ignore: must_be_immutable
-class PrimaryAppBar extends StatefulWidget with PreferredSizeWidget {
+class PrimaryAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final List<Widget>? actions;
   final Widget? leading;

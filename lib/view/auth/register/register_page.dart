@@ -1,5 +1,5 @@
-import 'package:base_project/data/resources/resources.dart';
-import 'package:base_project/shared/widgets/something/primary_app_bar.dart';
+import '../../../data/resources/resources.dart';
+import '../../../shared/widgets/something/primary_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared/utils/validation_utils.dart';

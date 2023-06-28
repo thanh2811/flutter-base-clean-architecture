@@ -60,6 +60,11 @@ class AuthRememberState extends AuthState {
   AuthRememberState(this.remember);
 }
 
+class AuthCheckPolicyState extends AuthState {
+  bool isChecked;
+  AuthCheckPolicyState(this.isChecked);
+}
+
 class AuthShowPasswordState extends AuthState {
   bool showPassword;
   AuthShowPasswordState({required this.showPassword});

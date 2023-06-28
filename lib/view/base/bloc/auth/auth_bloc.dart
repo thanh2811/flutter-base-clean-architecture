@@ -30,6 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthRefreshEvent>(_onRefresh);
 
+    on<AuthCheckPolicyEvent>(_onCheckPolicy);
+
     on<AuthShowPasswordEvent>((event, emit) {
       emit(AuthShowPasswordState(showPassword: event.showPassword));
     });
@@ -57,6 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         accountRemember: accountRemember));
     emit(AuthShowPasswordState(showPassword: false));
     emit(AuthRememberState(accountRemember));
+    emit(AuthCheckPolicyState(false));
   }
 
   FutureOr<void> _onLoginRequest(
@@ -104,5 +107,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _onRefresh(
       AuthRefreshEvent event, Emitter<AuthState> emit) async {
     await openIDRepository.refreshToken();
+  }
+
+  FutureOr<void> _onCheckPolicy(
+      AuthCheckPolicyEvent event, Emitter<AuthState> emit) {
+    emit(AuthCheckPolicyState(event.isChecked));
   }
 }

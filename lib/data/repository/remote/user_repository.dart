@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../../domain/entity/user/user.dart';
 import '../../model/api/base_response.dart';
 import '../../model/login/login_response.dart';
 
@@ -38,4 +39,8 @@ abstract class UserRepository {
 
   Future<Response> changePassword(
       {required String currentPassword, required String newPassword});
+
+  Future<ResponseWrapper<UserEntity>> getUser({String? userId});
+
+  Future<ResponseWrapper<UserEntity>> updateUser({required UserEntity user});
 }

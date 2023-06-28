@@ -1,21 +1,21 @@
 // ignore_for_file: use_build_context_synchronously, empty_catches
 
 import 'package:animated_widgets/animated_widgets.dart';
-import 'package:base_project/config/config.dart';
-import 'package:base_project/config/routes.dart';
-import 'package:base_project/data/resources/resources.dart';
-import 'package:base_project/shared/etx/app_ext.dart';
-import 'package:base_project/shared/utils/validation_utils.dart';
+import '../../../config/config.dart';
+import '../../../config/routes.dart';
+import '../../../data/resources/resources.dart';
+import '../../../shared/etx/app_ext.dart';
+import '../../../shared/utils/validation_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../shared/bloc/auth/auth_bloc.dart';
 import '../../../shared/utils/dialog_helper.dart';
 import '../../../shared/utils/view_utils.dart';
 import '../../../shared/widgets/button/primary_button.dart';
 import '../../../shared/widgets/text_field/primary_text_field.dart';
+import '../../base/bloc/auth/auth_bloc.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {

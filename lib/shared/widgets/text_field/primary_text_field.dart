@@ -1,5 +1,5 @@
-import 'package:base_project/config/config.dart';
-import 'package:base_project/shared/utils/date_time_utils.dart';
+import '../../../config/config.dart';
+import '../../utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

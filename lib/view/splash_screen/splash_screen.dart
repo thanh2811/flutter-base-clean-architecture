@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:base_project/config/routes.dart';
-import 'package:base_project/data/resources/resources.dart';
-import 'package:base_project/shared/bloc/auth/auth_bloc.dart';
+import '../../config/routes.dart';
+import '../../data/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upgrader/upgrader.dart';
+
+import '../base/bloc/auth/auth_bloc.dart';
 
 // ignore: must_be_immutable
 class SplashScreen extends StatelessWidget {

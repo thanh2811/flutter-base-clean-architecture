@@ -19,6 +19,12 @@ class AuthRememberEvent extends AuthEvent {
   const AuthRememberEvent(this.rememberMe);
 }
 
+class AuthCheckPolicyEvent extends AuthEvent {
+  final bool isChecked;
+
+  const AuthCheckPolicyEvent(this.isChecked);
+}
+
 class AuthShowPasswordEvent extends AuthEvent {
   final bool showPassword;
 

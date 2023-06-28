@@ -1,4 +1,4 @@
-import 'package:base_project/data/model/api/error_response.dart';
+import 'error_response.dart';
 
 class ResponseWrapper<T> {
   final ResponseStatus status;
@@ -17,9 +17,13 @@ class ResponseWrapper<T> {
   factory ResponseWrapper.success({required T data}) =>
       ResponseWrapper(status: ResponseStatus.success, data: data);
 
-  factory ResponseWrapper.error({required String message, int? statusCode, T? data}) =>
+  factory ResponseWrapper.error(
+          {required String message, int? statusCode, T? data}) =>
       ResponseWrapper(
-          status: ResponseStatus.error,data: data, message: message, statusCode: statusCode);
+          status: ResponseStatus.error,
+          data: data,
+          message: message,
+          statusCode: statusCode);
 }
 
 enum ResponseStatus {
@@ -35,5 +39,4 @@ class DefaultResponse<T> {
   final int? errorCode;
 
   DefaultResponse(this.success, this.data, this.errorMessage, this.errorCode);
-
 }

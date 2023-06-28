@@ -1,4 +1,4 @@
-import 'package:base_project/view/auth/register/register_page.dart';
+import '../view/auth/register/register_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../view/auth/login/login_page.dart';

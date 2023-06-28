@@ -59,13 +59,13 @@ class GetImageMultiPickerEvent extends GetImageEvent {
 class GetImageUploadImageEvent extends GetImageEvent {}
 
 class GetImageGetSingleImageUrlEvent extends GetImageEvent {
-  // final String imagePath;
-  // final ImageType imageType;
+  final String imagePath;
+  final ImageType imageType;
 
-  GetImageGetSingleImageUrlEvent(
-      // required this.imagePath,
-      // required this.imageType,
-      );
+  GetImageGetSingleImageUrlEvent({
+    required this.imagePath,
+    required this.imageType,
+  });
 }
 
 class GetImageGetMultiImageUrlEvent extends GetImageEvent {}
