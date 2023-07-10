@@ -41,16 +41,16 @@ class EndPoints {
 }
 
 class SSOConfig {
-  static const String clientId = "localhost_identity";
+  static String fileName =
+      kDebugMode ? 'app_config_test.env' : 'app_config_product.env';
 
-  // static const String clientId = "eztek_resource_planning";
-  static const String redirectUrl = "com.eztek.trueconnect://login-callback";
-
-  // static const String redirectUrl = "https:google.com";
-  static const String issuer = 'https://id-test.trueconnect.vn';
-
-  // static const String issuer = 'https://id.eztek.net';
-  static const String clientSecret = 'no_important';
+  static String issuer = dotenv.env['SSO_ISSUER'] ?? '';
+  static String clientId = dotenv.env['SSO_CLIENT_ID'] ?? '';
+  static String clientSecret = dotenv.env['SSO_CLIENT_SECRET'] ?? '';
+  static String ssoApiUrl = dotenv.env['SSO_API_URL'] ?? '';
+  static String redirectUrl = dotenv.env['SSO_REDIRECT_URL'] ?? '';
+  static const String postLogoutRedirectUrl =
+      "com.eztek.trueconnect://logout-callback";
 
   // static const String clientSecret = 'M)rVENCz5GFT@yPR';
   static const List<String> scope = [

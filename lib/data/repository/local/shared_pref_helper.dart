@@ -38,6 +38,7 @@ class SharePrefHelper implements LocalDataAccess {
   @override
   Future<void> clearData() async {
     await secureStorage.delete(key: SharedPreferenceKey.idToken);
+    await secureStorage.delete(key: SharedPreferenceKey.accessToken);
     await secureStorage.delete(key: SharedPreferenceKey.refreshToken);
     sharedPref.remove(SharedPreferenceKey.username);
     sharedPref.remove(SharedPreferenceKey.password);

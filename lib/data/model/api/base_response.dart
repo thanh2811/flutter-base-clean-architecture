@@ -1,4 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'error_response.dart';
+
+part 'base_response.g.dart';
 
 class ResponseWrapper<T> {
   final ResponseStatus status;
@@ -32,11 +35,20 @@ enum ResponseStatus {
   loading,
 }
 
+@JsonSerializable(genericArgumentFactories: true)
 class DefaultResponse<T> {
+  @JsonKey(name: 'success')
   final bool success;
+  @JsonKey(name: 'statusCode')
+  final int statusCode;
+  @JsonKey(name: 'messages')
+  final List<dynamic>? messages;
+  @JsonKey(name: 'data')
   final T? data;
-  final String errorMessage;
-  final int? errorCode;
 
-  DefaultResponse(this.success, this.data, this.errorMessage, this.errorCode);
+  DefaultResponse(this.success, this.statusCode, this.messages, this.data);
+
+  factory DefaultResponse.fromJson(Map<String, dynamic> json,
+          T Function(Object? json) fromJsonCallBack) =>
+      _$DefaultResponseFromJson(json, fromJsonCallBack);
 }
