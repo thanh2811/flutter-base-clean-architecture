@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -55,8 +53,6 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
         final defaultResponse = DefaultResponse<LoginResponse>.fromJson(
             loginResponse.data,
             (json) => LoginResponse.fromJson(json as Map<String, dynamic>));
-        log(defaultResponse.toString());
-        log(defaultResponse.data.toString());
         if (defaultResponse.success) {
           return ResponseWrapper.success(
               data: LoginResponse.fromJson(loginResponse.data));
@@ -106,20 +102,6 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
           ),
         ),
       );
-      localDataAccess
-          .setAccessToken(authorizationTokenResponse?.accessToken ?? '');
-      await localDataAccess
-          .setIdToken(authorizationTokenResponse?.idToken ?? '');
-      localDataAccess
-          .setRefreshToken(authorizationTokenResponse?.refreshToken ?? '');
-
-      log('auth response idToken: ${authorizationTokenResponse?.idToken}');
-      log('auth response access: ${authorizationTokenResponse?.accessToken}');
-      log('auth response exp: ${authorizationTokenResponse?.accessTokenExpirationDateTime}');
-      log('auth response refresh: ${authorizationTokenResponse?.refreshToken}');
-      log('auth response token type: ${authorizationTokenResponse?.tokenType}');
-      log('auth response scopes: ${authorizationTokenResponse?.scopes.toString()}');
-      log('auth response token additional params: ${authorizationTokenResponse?.tokenAdditionalParameters.toString()}');
 
       return ResponseWrapper.success(data: authorizationTokenResponse!);
     } catch (e) {
@@ -129,7 +111,6 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
 
   @override
   Future<ResponseWrapper<bool>> refreshToken() async {
-    log(' refresh token response ???');
     final TokenRequest tokenRequest = TokenRequest(
       SSOConfig.clientId,
       SSOConfig.redirectUrl,
@@ -145,8 +126,6 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
     );
     try {
       final TokenResponse? tokenResponse = await appAuth.token(tokenRequest);
-      log(' refresh token response: ${tokenResponse?.accessToken}');
-      log(' refresh token response: ${tokenResponse?.refreshToken}');
       if (tokenResponse?.accessToken == null) {
         return ResponseWrapper.error(message: '');
       }
@@ -169,9 +148,6 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
           ));
 
       return ResponseWrapper.success(data: UserSSO.fromJson(response.data));
-      // if(response.statusCode == 200){
-      // }
-      // return ResponseWrapper.error(message: "Đã xảy ra lỗi");
     } catch (e) {
       handleException(e);
       return ResponseWrapper.error(message: e.toString());
@@ -181,7 +157,7 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
   @override
   Future<ResponseWrapper<bool>> endSession() async {
     try {
-      final response = await appAuth.endSession(
+      await appAuth.endSession(
         EndSessionRequest(
           idTokenHint: await localDataAccess.getIdToken(),
           issuer: SSOConfig.issuer,
@@ -212,7 +188,6 @@ class OpenIDRepositoryImpl implements OpenIDRepository {
       }
       return ResponseWrapper.error(data: false, message: '');
     } catch (err) {
-      log('$err 🍍');
       return ResponseWrapper.error(data: false, message: '');
     }
   }

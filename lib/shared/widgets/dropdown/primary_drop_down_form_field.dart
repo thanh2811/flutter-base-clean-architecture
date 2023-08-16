@@ -8,7 +8,7 @@ import 'base_dropdown_value.dart';
 // ignore: must_be_immutable
 class PrimaryDropDownFormField extends StatefulWidget {
   List<BaseDropdownValue>? items;
-  final Function(BaseDropdownValue)? onChanged;
+  final Function(BaseDropdownValue value)? onChanged;
 
   /// set the initial value when the first build invoked
   final BaseDropdownValue? initialValue;
@@ -90,8 +90,9 @@ class _PrimaryDropDownFormFieldState extends State<PrimaryDropDownFormField> {
         offset: const Offset(-12, -12),
       ),
       decoration: InputDecoration(
+        isDense: true,
         contentPadding:
-            const EdgeInsets.only(top: 8, bottom: 12, right: 12, left: 12),
+            const EdgeInsets.only(top: 12, bottom: 12, right: 12, left: 12),
         hintText: widget.hintText,
         hintStyle: AppTextTheme.textLowPriority,
         labelStyle: AppTextTheme.textPrimaryBold,

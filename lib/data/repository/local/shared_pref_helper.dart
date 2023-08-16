@@ -12,7 +12,7 @@ class SharePrefHelper implements LocalDataAccess {
 
   @override
   void clearAccessToken() {
-    sharedPref.remove(SharedPreferenceKey.idToken);
+    sharedPref.remove(SharedPreferenceKey.accessToken);
   }
 
   @override

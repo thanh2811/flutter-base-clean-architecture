@@ -20,4 +20,5 @@ abstract class OpenIDRepository {
   Future<ResponseWrapper<bool>> requestDeactive({
     required bool isDeactive,
   });
+  Future<ResponseWrapper<bool>> endSession();
 }

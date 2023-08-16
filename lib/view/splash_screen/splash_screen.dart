@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../config/config.dart';
 import '../../config/routes.dart';
 import '../../data/resources/resources.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class SplashScreen extends StatelessWidget {
       canDismissDialog: true,
       messages: UpgraderMessages(
           code:
-              'Đã có phiên bản mới của True Connect. Vui lòng cập nhật để sử dụng các tính năng mới nhất.'),
+              'Đã có phiên bản mới của ${AppConfig.appName}. Vui lòng cập nhật để sử dụng các tính năng mới nhất.'),
     );
 
     return BlocProvider(

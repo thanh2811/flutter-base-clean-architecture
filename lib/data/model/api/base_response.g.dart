@@ -39,3 +39,25 @@ Object? _$nullableGenericToJson<T>(
   Object? Function(T value) toJson,
 ) =>
     input == null ? null : toJson(input);
+
+DefaultPagingResponse<T> _$DefaultPagingResponseFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    DefaultPagingResponse<T>(
+      json['page'] as int,
+      json['pageSize'] as int,
+      json['total'] as int,
+      _$nullableGenericFromJson(json['data'], fromJsonT),
+    );
+
+Map<String, dynamic> _$DefaultPagingResponseToJson<T>(
+  DefaultPagingResponse<T> instance,
+  Object? Function(T value) toJsonT,
+) =>
+    <String, dynamic>{
+      'page': instance.page,
+      'pageSize': instance.pageSize,
+      'total': instance.total,
+      'data': _$nullableGenericToJson(instance.data, toJsonT),
+    };

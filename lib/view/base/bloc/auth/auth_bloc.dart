@@ -75,7 +75,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (response.status == ResponseStatus.success && response.data != null) {
         emit(AuthLoginSuccessState());
-        localDataAccess.setAccessToken(response.data!.idToken);
+        localDataAccess.setAccessToken(response.data!.data?.accessToken ?? '');
         localDataAccess.setUsername(event.username.toString());
         localDataAccess.setPassword(event.password.toString());
         localDataAccess.setAccountRemember(event.rememberMe);
@@ -93,6 +93,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoginBySSOLoadingState());
     final response = await openIDRepository.loginBySSORequest();
     if (response.status == ResponseStatus.success) {
+      final authorizationTokenResponse = response.data;
+      localDataAccess
+          .setAccessToken(authorizationTokenResponse?.accessToken ?? '');
+      await localDataAccess
+          .setIdToken(authorizationTokenResponse?.idToken ?? '');
+      localDataAccess
+          .setRefreshToken(authorizationTokenResponse?.refreshToken ?? '');
       emit(AuthLoginSuccessState());
     } else {
       emit(AuthLoginBySSOErrorState(response.message ?? ''));
