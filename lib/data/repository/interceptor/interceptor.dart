@@ -36,8 +36,12 @@ class AppInterceptor {
             if (response.status == ResponseStatus.success) {
               log('onError: refreshed...');
               final opts = Options(
-                  method: error.requestOptions.method,
-                  headers: error.requestOptions.headers);
+                method: error.requestOptions.method,
+                headers: {
+                  'Authorization': 'Bearer ${localDataAccess.getAccessToken()}',
+                  'Retry-Count': 1,
+                },
+              );
               return handler.resolve(await dio.request(
                   error.requestOptions.path,
                   options: opts,
