@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:shared/shared.dart';
+
 import 'config/config.dart';
 import 'config/routes.dart';
 import 'data/resources/resources.dart';
@@ -9,6 +12,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'di/di.dart';
 
+import 'package:initializer/initializer.dart';
+
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -16,6 +21,13 @@ void main() async {
   await dotenv.load(fileName: Environment.fileName);
   await configureInjection();
   GestureBinding.instance.resamplingEnabled = true;
+
+  runZonedGuarded(() async {
+    await AppInitializer().init();
+  }, (error, stack) {
+    Log.e('error: $error');
+    Log.e('stack: $stack');
+  });
   runApp(const MyApp());
 }
 

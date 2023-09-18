@@ -21,6 +21,8 @@ class PrimaryButton extends StatelessWidget {
     this.isClickable = true,
     this.isCircle = false,
     this.contentPadding = 14,
+    this.mainAxisSize = MainAxisSize.max,
+    this.alignment = Alignment.center,
   });
 
   final BuildContext context;
@@ -35,6 +37,8 @@ class PrimaryButton extends StatelessWidget {
   final bool isClickable;
   final bool isCircle;
   final double contentPadding;
+  final MainAxisSize mainAxisSize;
+  final Alignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,7 @@ class PrimaryButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all(
             backgroundColor ?? AppColor.primaryColor,
           ),
+          alignment: alignment,
           padding: MaterialStateProperty.all(EdgeInsets.all(contentPadding)),
           elevation: MaterialStateProperty.all(4),
           shape: MaterialStateProperty.all(
@@ -77,6 +82,7 @@ class PrimaryButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: mainAxisSize,
           children: [
             icon == null
                 ? Container()

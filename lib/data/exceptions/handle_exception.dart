@@ -67,6 +67,9 @@ dynamic _parseDioError(
     if (err.type == DioErrorType.connectTimeout) {
       return 'Kết nối mạng không ổn định. Vui lòng kiểm tra lại';
     }
+    if (err.type == DioErrorType.receiveTimeout) {
+      return 'Kết nối mạng bị gián đoạn. Vui lòng thử lại';
+    }
 
     if (err.type == DioErrorType.cancel) {
       return err.message;
