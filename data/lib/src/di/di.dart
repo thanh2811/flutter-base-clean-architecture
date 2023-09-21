@@ -13,7 +13,6 @@ abstract class ServiceModule {
   @preResolve
   Future<SharedPreferences> get sharedPref => SharedPreferences.getInstance();
 
-  @preResolve
   FlutterSecureStorage get secureStorage => const FlutterSecureStorage(
         aOptions: AndroidOptions(encryptedSharedPreferences: true),
         iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
